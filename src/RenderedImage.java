@@ -1,7 +1,8 @@
 import javax.swing.*;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
+import java.io.File; 
+import java.io.IOException; 
+import java.awt.image.BufferedImage; 
+import javax.imageio.ImageIO; 
 
 public class RenderedImage extends JFrame{
 
@@ -17,6 +18,6 @@ public class RenderedImage extends JFrame{
 	}
 
 	public static void main(String args[]){
-		Image img = new Image();
+		RenderedImage img = new RenderedImage();
 	}
 }
