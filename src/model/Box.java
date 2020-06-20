@@ -115,8 +115,5 @@ public class Box implements IConstants{
         // System.out.println(fondo.getRGB());
         // System.out.println(Color.RED.getRGB());
         // System.out.println(customGreen.getRGB());
-
-        Box b = new Box();
-        System.out.println(b.getRGB(10, 400));
     }
 }
