@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.*;
 import javax.imageio.*;
 import java.awt.event.*;
+import model.*;
 
 public class PTRenderedImage extends JPanel{
 
@@ -20,7 +21,7 @@ public class PTRenderedImage extends JPanel{
 		super();
 		super.setBounds(0,0,500,500);
 		super.setLayout(null);
-		this.bufferedImage = loadImg();
+		this.bufferedImage = loadScene();
 		this.graphics = (Graphics2D) bufferedImage.getGraphics();
 		this.graphics.drawImage(this.bufferedImage, 0, 0, 500, 500, null);
 		this.setVisible(true);
@@ -35,6 +36,19 @@ public class PTRenderedImage extends JPanel{
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	private BufferedImage loadScene(){
+		model.Box b = new model.Box();
+		BufferedImage img = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
+
+		for (int x = 0; x < 500; x++){
+			for (int y = 0; y < 500; y++){
+				int color = b.getRGB(x, y);
+				img.setRGB(x, y, color);
+			}
+		}
+		return img;
 	}
 
 	@Override
