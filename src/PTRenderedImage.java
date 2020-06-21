@@ -7,6 +7,7 @@ import java.io.*;
 import javax.imageio.*;
 import java.awt.event.*;
 import model.*;
+import model.Box;
 
 import static java.awt.Color.BLACK;
 
@@ -24,9 +25,11 @@ public class PTRenderedImage extends JPanel{
 		graphics = (Graphics2D) bufferedImage.getGraphics();
 		graphics.setPaint(BLACK);
 		graphics.fillRect(0,0,bufferedImage.getWidth(),bufferedImage.getHeight());
-		PathTracer pathTracer = new PathTracer(loadScene(),bufferedImage);
+		Box box = new Box();
+		PathTracer pathTracer = new PathTracer(loadScene(box),bufferedImage,box);
 		pathTracer.PathTrace(); //Aqui va a estar todo el algoritmo que va pintando
 		graphics.drawImage(bufferedImage, 0, 0, 500, 500, null);
+		System.out.println("Termino");
 	}
 
 	private BufferedImage loadImg(){
@@ -40,8 +43,8 @@ public class PTRenderedImage extends JPanel{
 		}
 	}
 
-	private BufferedImage loadScene(){
-		model.Box b = new model.Box();
+	private BufferedImage loadScene(Box pBox){
+		model.Box b = pBox;
 		BufferedImage img = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
 
 		for (int x = 0; x < 500; x++){
