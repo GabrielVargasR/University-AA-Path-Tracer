@@ -1,6 +1,7 @@
 package model;
 
 public interface IConstants {
+    public static final int imageSize = 500;
     public static final int RED = -65536;
     public static final int GREEN = -16746496;
     public static final int LIGHT = -126;

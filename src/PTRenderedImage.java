@@ -8,6 +8,8 @@ import javax.imageio.*;
 import java.awt.event.*;
 import model.*;
 
+import static java.awt.Color.BLACK;
+
 public class PTRenderedImage extends JPanel{
 
 	private static final long serialVersionUID = 8877854516634954684L;
@@ -18,10 +20,13 @@ public class PTRenderedImage extends JPanel{
 		super();
 		setPreferredSize(new Dimension(500,500));
 		addMouseListener(panelClick());
-		this.bufferedImage = loadScene();
-		this.graphics = (Graphics2D) bufferedImage.getGraphics();
-		this.graphics.drawImage(this.bufferedImage, 0, 0, 500, 500, null);
-		this.setVisible(true);
+		this.bufferedImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
+		graphics = (Graphics2D) bufferedImage.getGraphics();
+		graphics.setPaint(BLACK);
+		graphics.fillRect(0,0,bufferedImage.getWidth(),bufferedImage.getHeight());
+		PathTracer pathTracer = new PathTracer(loadScene(),bufferedImage);
+		pathTracer.PathTrace(); //Aqui va a estar todo el algoritmo que va pintando
+		graphics.drawImage(bufferedImage, 0, 0, 500, 500, null);
 	}
 
 	private BufferedImage loadImg(){
@@ -55,7 +60,7 @@ public class PTRenderedImage extends JPanel{
 				int x=e.getX();
 				int y=e.getY();
 				System.out.println(x + ","+y);
-				changeColor(x, y);
+				changeColor(x, y,bufferedImage);
 				repaint();
 			}
 
@@ -82,9 +87,9 @@ public class PTRenderedImage extends JPanel{
 		g.drawImage(bufferedImage, 0, 0, null);
 	}
 
-	public void changeColor(int x, int y){
-		System.out.println(this.bufferedImage.getRGB(x, y));
-		this.bufferedImage.setRGB(x, y, Color.RED.getRGB());
+	public void changeColor(int x, int y,BufferedImage pImage){
+		System.out.println(pImage.getRGB(x, y));
+		pImage.setRGB(x, y, Color.RED.getRGB());
 		repaint();
 	}
 }
