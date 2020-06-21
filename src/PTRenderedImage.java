@@ -1,9 +1,6 @@
 import javax.swing.*;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.*;
@@ -19,8 +16,8 @@ public class PTRenderedImage extends JPanel{
 
 	public PTRenderedImage() {
 		super();
-		super.setBounds(0,0,500,500);
-		super.setLayout(null);
+		setPreferredSize(new Dimension(500,500));
+		addMouseListener(panelClick());
 		this.bufferedImage = loadScene();
 		this.graphics = (Graphics2D) bufferedImage.getGraphics();
 		this.graphics.drawImage(this.bufferedImage, 0, 0, 500, 500, null);
@@ -50,7 +47,36 @@ public class PTRenderedImage extends JPanel{
 		}
 		return img;
 	}
+	public MouseListener panelClick(){
+		MouseListener ml = new MouseListener(){
 
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int x=e.getX();
+				int y=e.getY();
+				System.out.println(x + ","+y);
+				changeColor(x, y);
+				repaint();
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+		};
+		return ml;
+	}
 	@Override
 	public void paintComponent(Graphics g){
 		g.drawImage(bufferedImage, 0, 0, null);
