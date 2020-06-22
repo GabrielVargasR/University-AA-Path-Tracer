@@ -16,7 +16,7 @@ public class PathTracer {
     boolean IsRunning;
     int imageSize;
 
-    PathTracer(BufferedImage pOriginalImage, BufferedImage pCanvasImage, Box pBox){
+    public PathTracer(BufferedImage pOriginalImage, BufferedImage pCanvasImage, Box pBox){
         originalImage = pOriginalImage;
         canvasImage = pCanvasImage;
         box = pBox;
@@ -24,7 +24,7 @@ public class PathTracer {
         random = new Random();
     }
 
-    void PathTrace(){
+    public void PathTrace(){
         model.Point point;
         int colorValue;
         for (int i = 0; i < 100000;i++){
@@ -57,9 +57,11 @@ public class PathTracer {
             //System.out.println(point.toString());
         }
     }
-    void Stop(){
+    
+    public void Stop(){
         IsRunning = false;
     }
+
     private model.Point getRandomPoint(){
         return new Point(random.nextInt(imageSize),random.nextInt(imageSize));
     }
