@@ -25,9 +25,8 @@ public class PTRenderedImage extends JPanel{
 		this.graphics = (Graphics2D) bufferedImage.getGraphics();
 		this.graphics.setPaint(BLACK);
 		this.graphics.fillRect(0,0,bufferedImage.getWidth(),bufferedImage.getHeight());
-		// Box box = new Box();
-		// PathTracer pathTracer = new PathTracer(loadScene(box),bufferedImage,box);
 		// pathTracer.PathTrace(); //Aqui va a estar todo el algoritmo que va pintando
+		PathTracer.createInstance(this.bufferedImage, new Box());
 		this.graphics.drawImage(bufferedImage, 0, 0, 500, 500, null);
 	}
 
