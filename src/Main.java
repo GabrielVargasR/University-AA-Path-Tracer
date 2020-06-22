@@ -9,6 +9,7 @@ public class Main {
     private ScheduledExecutorService painter;
     private Executor renderer;
     private MainFrame frame;
+    private PathTracer pathTracer;
     private Runnable paintImage;
     private Runnable renderImage;
 
@@ -16,6 +17,7 @@ public class Main {
         this.painter = Executors.newSingleThreadScheduledExecutor();
         this.renderer = Executors.newSingleThreadExecutor();
         this.frame = new MainFrame();
+        this.pathTracer = PathTracer.getInstance();
         this.createRunnables();
     }
 
@@ -35,12 +37,7 @@ public class Main {
         this.renderImage = new Runnable(){
             @Override
             public void run() {
-                while(true){
-                    try{
-                        System.out.println("Rendering");
-                        Thread.sleep(1000);
-                    } catch (Exception e){}
-                }
+                pathTracer.pathTrace();
             }
         };
     } 
