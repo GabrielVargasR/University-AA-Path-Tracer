@@ -11,7 +11,7 @@ public class Intersector {
         int dotProd = v2.dot(v3);
         if (Math.abs(dotProd) < 0.000001) return -1;
 
-        int t1 = v2.dot(v3) / dotProd;
+        int t1 = v2.dot(v1) / dotProd;
         int t2 = v1.dot(v3) / dotProd;
 
         if (t1 >= 0 & (t2 >= 0 & t2 <= 1)) return t1;
