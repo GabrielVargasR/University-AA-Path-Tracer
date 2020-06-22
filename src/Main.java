@@ -2,6 +2,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import model.Box;
 
 public class Main {
 
@@ -27,7 +28,7 @@ public class Main {
         this.paintImage = new Runnable(){
             @Override
             public void run(){
-                System.out.println("Painting");
+                frame.repaintImage();
             }
         };
 
