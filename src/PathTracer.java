@@ -7,24 +7,31 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.Vector;
 
-public class PathTracer {
-    BufferedImage originalImage;
-    BufferedImage canvasImage;
-    Box box;
-    Random random;
+public final class PathTracer {
+    private static BufferedImage canvasImage;
+    private static Box box;
+    private static Random random;
 
-    boolean IsRunning;
-    int imageSize;
+    private static boolean IsRunning;
+    private static int imageSize;
+    private static PathTracer tracer;
 
-    public PathTracer(BufferedImage pOriginalImage, BufferedImage pCanvasImage, Box pBox){
-        originalImage = pOriginalImage;
+    private static void PathTracer(BufferedImage pCanvasImage, Box pBox){
         canvasImage = pCanvasImage;
         box = pBox;
         imageSize = canvasImage.getHeight();
         random = new Random();
     }
 
-    public void PathTrace(){
+    public static PathTracer getInstance(){
+        return tracer;
+    }
+
+    public static void createInstance(BufferedImage pCanvasImage, Box pBox){
+        PathTracer(pCanvasImage, pBox);
+    }
+
+    public static void pathTrace(){
         model.Point point;
         int colorValue;
         for (int i = 0; i < 100000;i++){
@@ -44,10 +51,10 @@ public class PathTracer {
                 }
                 if (intersectionExist){
                     double intensity = Math.pow((1-(distance/500)),2);
-                    int originalColor = originalImage.getRGB(point.getX(),point.getY());
+                    int originalColor = box.getRGB(point.getX(),point.getY());
                     double newColor = originalColor*intensity* Color.YELLOW.getRGB();
                     colorValue+=Math.ceil(newColor);
-                    System.out.println(colorValue);
+                    // System.out.println(colorValue);
                 }
                 int averageColorValue = colorValue / box.getSources().size();
                 canvasImage.setRGB(point.getX(),point.getY(),averageColorValue);
@@ -58,11 +65,11 @@ public class PathTracer {
         }
     }
     
-    public void Stop(){
+    public static void Stop(){
         IsRunning = false;
     }
 
-    private model.Point getRandomPoint(){
+    private static model.Point getRandomPoint(){
         return new Point(random.nextInt(imageSize),random.nextInt(imageSize));
     }
 }
