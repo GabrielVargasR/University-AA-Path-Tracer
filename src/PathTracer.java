@@ -25,7 +25,8 @@ public class PathTracer {
     public void pathTrace() {
         model.Point point;
         int colorValue;
-        for (int i = 0; i < 100000; i++) {
+        IsRunning = true;
+        while(IsRunning) {
             point = getRandomPoint();
             colorValue = 0;
             for (Point source : box.getSources()) {
