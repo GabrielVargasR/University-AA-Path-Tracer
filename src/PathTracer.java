@@ -36,25 +36,21 @@ public class PathTracer implements IConstants{
 
                 boolean rayIsFree = true;
                 for (Point[] segment : box.getSegments()) {
-                    int intersectionDistance = Intersector.intersection(point, direction, segment[0], segment[1]);
+                    int intersectionDistance = Intersector.intersection(point, Intersector.normalize(direction), segment[0], segment[1]);
                     if (intersectionDistance != -1 && intersectionDistance < distance) {
                         rayIsFree = false;
                         break;
                     }
                 }
                 if (rayIsFree) {
-                    double intensity = Math.pow((1 - (distance / 500)), 2);
+                    float intensity = (float)Math.pow((1 - (distance / 500)), 2);
                     int originalColor = box.getRGB(point.getX(), point.getY());
-                    double newColor = originalColor*intensity* LIGHT;
-                    colorValue += Math.ceil(newColor);
-                    // System.out.println(colorValue);
+                    //colorValue += calculateColor(originalColor, LIGHT, intensity);
+                    colorValue += originalColor; //temp para pruebas
                 }
-                int averageColorValue = colorValue / box.getSources().size();
+                int averageColorValue = averageColor(colorValue, box.getSources().size());
                 canvasImage.setRGB(point.getX(), point.getY(), averageColorValue);
-                // System.out.println(averageColorValue);
             }
-            // canvasImage.setRGB(point.getX(),point.getY(),Color.WHITE.getRGB());
-            // System.out.println(point.toString());
         }
     }
 
@@ -71,5 +67,27 @@ public class PathTracer implements IConstants{
 
     private model.Point getRandomPoint() {
         return new Point(random.nextInt(imageSize), random.nextInt(imageSize));
+    }
+    //Esto se puede factorizar en un getColor pero no se si lo vamos a cambiar para on tener que convertir
+    private int calculateColor(int pOriginalColor, int pLightSourceColor,float pIntensity ){
+        Color originalColor = Color.getColor("", pOriginalColor);
+        Color lightColor = Color.getColor("", pLightSourceColor);
+        float[] originalRGB = originalColor.getColorComponents(null);
+        float[] lightRGB = lightColor.getColorComponents(null);
+        float[] retRGB = new float[3];
+        retRGB[0] = (originalRGB[0] * pIntensity * lightRGB[0]);
+        retRGB[1] = (originalRGB[1] * pIntensity * lightRGB[1]);
+        retRGB[2] = (originalRGB[2] * pIntensity * lightRGB[2]);
+        return new Color(retRGB[0],retRGB[1],retRGB[2]).getRGB();
+    }
+
+    private int averageColor(int pColor, int sourcesNum){
+        Color originalColor = Color.getColor("", pColor);
+        float[] originalRGB = originalColor.getColorComponents(null);
+        float[] retRGB = new float[3];
+        retRGB[0] = (originalRGB[0] *1/sourcesNum);
+        retRGB[1] = (originalRGB[1] *1/sourcesNum);
+        retRGB[2] = (originalRGB[2] *1/sourcesNum);
+        return new Color(retRGB[0],retRGB[1],retRGB[2]).getRGB();
     }
 }
