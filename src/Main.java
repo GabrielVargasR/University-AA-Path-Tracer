@@ -22,7 +22,7 @@ public class Main {
     }
 
     public void trace(){
-        painter.scheduleWithFixedDelay(this.paintImage, 3, 3, TimeUnit.SECONDS);
+        painter.scheduleWithFixedDelay(this.paintImage, 1, 1, TimeUnit.SECONDS);
         renderer.execute(this.renderImage);
     }
 

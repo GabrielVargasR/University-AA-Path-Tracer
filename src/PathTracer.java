@@ -1,12 +1,13 @@
 import model.Box;
 import model.Intersector;
 import model.Point;
+import model.IConstants;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-public class PathTracer {
+public class PathTracer implements IConstants{
     private static PathTracer instance;
     private BufferedImage canvasImage;
     private Box box;
@@ -25,8 +26,7 @@ public class PathTracer {
     public void pathTrace() {
         model.Point point;
         int colorValue;
-        IsRunning = true;
-        while(IsRunning) {
+        for (int i = 0; i < 100000;i++){
             point = getRandomPoint();
             colorValue = 0;
             for (Point source : box.getSources()) {
@@ -41,11 +41,11 @@ public class PathTracer {
                         break;
                     }
                 }
-                if (intersectionExist) {
-                    double intensity = Math.pow((1 - (distance / 500)), 2);
-                    int originalColor = box.getRGB(point.getX(), point.getY());
-                    double newColor = originalColor * intensity * Color.YELLOW.getRGB();
-                    colorValue += Math.ceil(newColor);
+                if (intersectionExist){
+                    double intensity = Math.pow((1-(distance/500)),2);
+                    int originalColor = box.getRGB(point.getX(),point.getY());
+                    double newColor = originalColor*intensity* LIGHT;
+                    colorValue+=Math.ceil(newColor);
                     // System.out.println(colorValue);
                 }
                 int averageColorValue = colorValue / box.getSources().size();
