@@ -5,18 +5,19 @@ import java.awt.event.*;
 public class MainFrame extends JFrame{
 
     private static final long serialVersionUID = 1L;
+    private PTRenderedImage image;
+    
     public MainFrame(){
-        super("Path Tracing Example");
+        super("Path Tracing");
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setResizable(false);
-		setContentPane(new PTRenderedImage());
+        this.image = new PTRenderedImage();
+		setContentPane(this.image);
         pack();
         super.setVisible(true);
     }
 
-
-
-    public static void main(String[] args) {
-        MainFrame f = new MainFrame();
+    public void repaintImage(){
+        this.image.repaint();
     }
 }

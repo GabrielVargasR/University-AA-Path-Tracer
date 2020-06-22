@@ -7,6 +7,7 @@ import java.io.*;
 import javax.imageio.*;
 import java.awt.event.*;
 import model.*;
+import model.Box;
 
 import static java.awt.Color.BLACK;
 
@@ -21,12 +22,13 @@ public class PTRenderedImage extends JPanel{
 		setPreferredSize(new Dimension(500,500));
 		addMouseListener(panelClick());
 		this.bufferedImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
-		graphics = (Graphics2D) bufferedImage.getGraphics();
-		graphics.setPaint(BLACK);
-		graphics.fillRect(0,0,bufferedImage.getWidth(),bufferedImage.getHeight());
-		PathTracer pathTracer = new PathTracer(loadScene(),bufferedImage);
-		pathTracer.PathTrace(); //Aqui va a estar todo el algoritmo que va pintando
-		graphics.drawImage(bufferedImage, 0, 0, 500, 500, null);
+		this.graphics = (Graphics2D) bufferedImage.getGraphics();
+		this.graphics.setPaint(BLACK);
+		this.graphics.fillRect(0,0,bufferedImage.getWidth(),bufferedImage.getHeight());
+		// Box box = new Box();
+		// PathTracer pathTracer = new PathTracer(loadScene(box),bufferedImage,box);
+		// pathTracer.PathTrace(); //Aqui va a estar todo el algoritmo que va pintando
+		this.graphics.drawImage(bufferedImage, 0, 0, 500, 500, null);
 	}
 
 	private BufferedImage loadImg(){
@@ -40,8 +42,8 @@ public class PTRenderedImage extends JPanel{
 		}
 	}
 
-	private BufferedImage loadScene(){
-		model.Box b = new model.Box();
+	private BufferedImage loadScene(Box pBox){
+		model.Box b = pBox;
 		BufferedImage img = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
 
 		for (int x = 0; x < 500; x++){

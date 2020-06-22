@@ -3,7 +3,7 @@ package model;
 public class Intersector {
     public Intersector(){}
 
-    public int intersection(Point origin, Point direction, Point point1, Point point2){
+    public static int intersection(Point origin, Point direction, Point point1, Point point2){
         Point v1 = origin.subtract(point1);
         Point v2 = point2.subtract(point1);
         Point v3 = new Point(-direction.getY(), direction.getX());
@@ -19,11 +19,11 @@ public class Intersector {
         return -1;
     }
 
-    public double lenght(Point pPoint){
+    public static double lenght(Point pPoint){
         return Math.sqrt(Math.pow(pPoint.getX(),2)+Math.pow(pPoint.getY(), 2));
     }
 
-    public Point normalize(Point pPoint){
+    public static Point normalize(Point pPoint){
         return (pPoint.divide(lenght(pPoint)));
     }
 }
