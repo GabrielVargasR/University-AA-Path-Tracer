@@ -33,15 +33,15 @@ public class PathTracer {
                 Point direction = source.subtract(point);
                 double distance = Intersector.lenght(direction);
 
-                boolean intersectionExist = false;
+                boolean rayIsFree = true;
                 for (Point[] segment : box.getSegments()) {
                     int intersectionDistance = Intersector.intersection(point, direction, segment[0], segment[1]);
                     if (intersectionDistance != -1 && intersectionDistance < distance) {
-                        intersectionExist = true;
+                        rayIsFree = false;
                         break;
                     }
                 }
-                if (intersectionExist) {
+                if (rayIsFree) {
                     double intensity = Math.pow((1 - (distance / 500)), 2);
                     int originalColor = box.getRGB(point.getX(), point.getY());
                     double newColor = originalColor * intensity * Color.YELLOW.getRGB();
