@@ -15,6 +15,10 @@ public class PathTracer implements IConstants{
     private int imageSize;
     private boolean IsRunning;
 
+    //temp
+    int xPos;
+    int yPos;
+
     public static PathTracer getInstance() {
         return instance;
     }
@@ -36,14 +40,15 @@ public class PathTracer implements IConstants{
 
                 boolean rayIsFree = true;
                 for (Point[] segment : box.getSegments()) {
-                    int intersectionDistance = Intersector.intersection(point, Intersector.normalize(direction), segment[0], segment[1]);
+                    //int intersectionDistance = Intersector.intersection(point, direction, segment[0], segment[1]); //tira los triangulos
+                    int intersectionDistance = Intersector.intersection(point, Intersector.normalize(direction), segment[0], segment[1]); //como lo tiene el profe en comentarios
                     if (intersectionDistance != -1 && intersectionDistance < distance) {
                         rayIsFree = false;
                         break;
                     }
                 }
                 if (rayIsFree) {
-                    float intensity = (float)Math.pow((1 - (distance / 500)), 2);
+                    float intensity = (float)Math.pow((1 - (distance / imageSize)), 2);
                     int originalColor = box.getRGB(point.getX(), point.getY());
                     //colorValue += calculateColor(originalColor, LIGHT, intensity);
                     colorValue += originalColor; //temp para pruebas
@@ -63,10 +68,26 @@ public class PathTracer implements IConstants{
         box = pBox;
         imageSize = canvasImage.getHeight();
         random = new Random();
+
+        //temp
+        xPos = 0;
+        yPos = 0;
     }
 
     private model.Point getRandomPoint() {
-        return new Point(random.nextInt(imageSize), random.nextInt(imageSize));
+        //return new Point(random.nextInt(imageSize), random.nextInt(imageSize));
+        if(xPos >= imageSize-1){
+            xPos = 0;
+            yPos++;
+            
+        }
+        else{
+            if(yPos < imageSize-1){
+                xPos++;
+            }
+        }   
+        System.out.println(xPos +","+yPos);
+        return new model.Point(xPos, yPos);
     }
     //Esto se puede factorizar en un getColor pero no se si lo vamos a cambiar para on tener que convertir
     private int calculateColor(int pOriginalColor, int pLightSourceColor,float pIntensity ){
