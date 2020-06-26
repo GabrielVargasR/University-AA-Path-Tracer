@@ -1,74 +1,94 @@
-import model.Box;
-import model.Intersector;
-import model.Point;
-import model.IConstants;
+import model.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+import java.util.ArrayList;
 
 public class PathTracer implements IConstants{
     private static PathTracer instance;
-    private BufferedImage canvasImage;
     private Box box;
+    private int size;
+    private BufferedImage canvasImage;
     private Random random;
-    private int imageSize;
-    private boolean IsRunning;
+    private ArrayList<model.Point[]> segments;
+    private ArrayList<model.Point> sources;
 
-    public static PathTracer getInstance() {
-        return instance;
-    }
-
-    public static void createInstance(BufferedImage pCanvasImage, Box pBox) {
-        instance = new PathTracer(pCanvasImage, pBox);
-    }
-
-    public void pathTrace() {
-        model.Point point;
-        int colorValue;
-        for (int i = 0; i < 100000;i++){
-            point = getRandomPoint();
-            colorValue = 0;
-            for (Point source : box.getSources()) {
-                Point direction = source.subtract(point);
-                double distance = Intersector.lenght(direction);
-
-                boolean intersectionExist = false;
-                for (Point[] segment : box.getSegments()) {
-                    int intersectionDistance = Intersector.intersection(point, direction, segment[0], segment[1]);
-                    if (intersectionDistance != -1 && intersectionDistance < distance) {
-                        intersectionExist = true;
-                        break;
-                    }
-                }
-                if (intersectionExist){
-                    double intensity = Math.pow((1-(distance/500)),2);
-                    int originalColor = box.getRGB(point.getX(),point.getY());
-                    double newColor = originalColor*intensity* LIGHT;
-                    colorValue+=Math.ceil(newColor);
-                    // System.out.println(colorValue);
-                }
-                int averageColorValue = colorValue / box.getSources().size();
-                canvasImage.setRGB(point.getX(), point.getY(), averageColorValue);
-                // System.out.println(averageColorValue);
-            }
-            // canvasImage.setRGB(point.getX(),point.getY(),Color.WHITE.getRGB());
-            // System.out.println(point.toString());
-        }
-    }
-
-    public void Stop() {
-        IsRunning = false;
-    }
-
-    private PathTracer(BufferedImage pCanvasImage, Box pBox) {
-        canvasImage = pCanvasImage;
-        box = pBox;
-        imageSize = canvasImage.getHeight();
+    private PathTracer(){
+        box = new Box();
+        segments = box.getSegments();
+        sources = box.getSources();
         random = new Random();
     }
 
-    private model.Point getRandomPoint() {
-        return new Point(random.nextInt(imageSize), random.nextInt(imageSize));
+    public static PathTracer getInstance(){
+        if (instance == null) instance = new PathTracer();
+        return instance;
+     }
+
+    public void setImage(BufferedImage pImage){
+        canvasImage = pImage;
+        size = canvasImage.getWidth();
+    }
+
+    public void tracePath(){
+
+        model.Point point;
+        int[] pixColor;
+
+        model.Point direction;
+        double length;
+        double intensity;
+        int[] pixValue;
+
+        int distance;
+        boolean free;
+
+        while (true){
+            point = new model.Point(random.nextInt(size), random.nextInt(size));
+            pixColor = new int[]{0,0,0};
+
+            for (model.Point source : sources){
+                direction = source.subtract(point);
+                length = Intersector.lenght(direction);
+                free = true;
+
+                for(model.Point[] segment : segments){
+                    distance = Intersector.intersection(point, Intersector.normalize(direction), segment[0], segment[1]);
+
+                    if (distance != -1 & distance < length){
+                        free = false;
+                        break;
+                    }
+                }
+
+                if (free){
+                    intensity = Math.pow((1-(length / IMAGE_SIZE)), 2);
+                    pixValue = box.getRGB(point.getX(), point.getY());
+                    pixValue = updateColor(pixValue, intensity);
+
+                    pixColor[0] += pixValue[0];
+                    pixColor[1] += pixValue[1];
+                    pixColor[2] += pixValue[2];
+                }
+
+                // box.updateSceneAt(point.getX(), point.getY(), pixColor);
+                updateImage(point.getX(), point.getY(), pixColor);
+                // canvasImage.setRGB(point.getX(), point.getY(), (new Color(pixColor[0]/SOURCES, pixColor[2]/SOURCES, pixColor[2]/SOURCES).getRGB()));
+            }
+        }
+    }
+
+    private int[] updateColor(int[] pCurrent, double pIntensity){
+        int red = (int) (pCurrent[0] * pIntensity * (LIGHT_R/255));
+        int green = (int) (pCurrent[1] * pIntensity * (LIGHT_G/255));
+        int blue = (int) (pCurrent[2] * pIntensity * (LIGHT_B/255));
+        return new int[]{red, green, blue};
+    }
+
+    private void updateImage(int pX, int pY, int[] pPixColor){
+        // System.out.println(rgbValues[0] +", "+rgbValues[1]+", "+ rgbValues[2]);
+        Color color = new Color(pPixColor[0]/SOURCES, pPixColor[2]/SOURCES, pPixColor[2]/SOURCES);
+        canvasImage.setRGB(pX, pY, color.getRGB());
     }
 }

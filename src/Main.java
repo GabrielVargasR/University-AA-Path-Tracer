@@ -2,7 +2,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import model.Box;
 
 public class Main {
 
@@ -22,7 +21,7 @@ public class Main {
     }
 
     public void trace(){
-        painter.scheduleWithFixedDelay(this.paintImage, 1, 1, TimeUnit.SECONDS);
+        painter.scheduleWithFixedDelay(this.paintImage, 500, 500, TimeUnit.MILLISECONDS);
         renderer.execute(this.renderImage);
     }
 
@@ -37,7 +36,7 @@ public class Main {
         this.renderImage = new Runnable(){
             @Override
             public void run() {
-                pathTracer.pathTrace();
+                pathTracer.tracePath();
             }
         };
     } 
