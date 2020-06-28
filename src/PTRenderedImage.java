@@ -2,7 +2,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import model.Box;
+// import model.Box;
 import model.IConstants;
 
 import static java.awt.Color.BLACK;

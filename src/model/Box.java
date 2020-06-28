@@ -41,6 +41,7 @@ public class Box implements IConstants{
         Point[] squareR = new Point[]{new Point(380, 230), new Point(380, 340)};
         Point[] squareT = new Point[]{new Point(235, 200), new Point(375, 200)};
 
+        
         this.segments.add(redBorder);
         this.segments.add(greenBorder);
         this.segments.add(boxL);
@@ -100,13 +101,6 @@ public class Box implements IConstants{
         // sources
         this.scene.get(250).replace(0, new int[]{LIGHT_R, LIGHT_G, LIGHT_B});
         this.scene.get(305).replace(201, new int[]{LIGHT_R, LIGHT_G, LIGHT_B});
-    }
-
-    public void updateSceneAt(int pX, int pY, int[] pColors){
-        int red = pColors[0] / SOURCES;
-        int green = pColors[1] / SOURCES;
-        int blue = pColors[2] / SOURCES;
-        this.scene.get(pX).replace(pY, new int[] {red, green, blue});
     }
 
     public static void main(String[] args) {
