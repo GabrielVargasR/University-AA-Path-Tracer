@@ -25,11 +25,20 @@ public class Intersector {
         return (new Point(x,y));
     }
 
-    public static double lenght(Point pPoint){
+    public static double length(Point pPoint){
         return Math.sqrt(Math.pow(pPoint.getX(),2)+Math.pow(pPoint.getY(), 2));
     }
 
     public static Point normalize(Point pPoint){
-        return (pPoint.divide(lenght(pPoint)));
+        return (pPoint.divide(length(pPoint)));
+    }
+
+    public static double angle(Point pPoint, Point pNormalDir, Point pIntersection){
+        Point v1 = pPoint.subtract(pIntersection);
+        Point v2 = pNormalDir;
+
+        double cosT = v1.dot(v2) / (Intersector.length(v1) * Intersector.length(v2));
+        cosT = Math.abs(cosT);
+        return Math.acos(cosT);
     }
 }

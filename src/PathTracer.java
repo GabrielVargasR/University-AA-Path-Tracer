@@ -50,7 +50,7 @@ public class PathTracer implements IConstants{
 
             for (model.Point source : sources){
                 direction = source.subtract(point);
-                length = Intersector.lenght(direction);
+                length = Intersector.length(direction);
                 free = true;
 
                 for(model.Point[] segment : segments){
