@@ -32,18 +32,4 @@ public class Intersector {
     public static Point normalize(Point pPoint){
         return (pPoint.divide(lenght(pPoint)));
     }
-
-    public static void main(String[] args) {
-        Point o = new Point(1,2);
-        Point d = new Point(1,0);
-        Point s1 = new Point(3,5);
-        Point s2 = new Point(3,1);
-        Point l1 = new Point(5,3);
-        Point l2 = new Point(5,1);
-
-        int i1 = Intersector.intersection(o, normalize(d), s1, s2);
-        int i2 = Intersector.intersection(o, normalize(d), l1, l2);
-        System.out.println(intersectionPoint(o, d, i1));
-        System.out.println(intersectionPoint(o, d, i2));
-    }
 }
