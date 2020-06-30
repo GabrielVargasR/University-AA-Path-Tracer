@@ -36,16 +36,18 @@ public class Box implements IConstants{
     }
 
     private void createSegments(){
-        Point[] redBorder = new Point[]{new Point(12,0), new Point(12, 499)};
-        Point[] greenBorder = new Point[]{new Point(488,0), new Point(488, 499)};
+        // First two points are the points for the segment
+        // Third point is the direction of the normal line
+        Point[] redBorder = new Point[]{new Point(12,0), new Point(12, 499), new Point(1,0)};
+        Point[] greenBorder = new Point[]{new Point(488,0), new Point(488, 499), new Point(-1,0)};
 
-        Point[] boxL = new Point[]{new Point(70, 350), new Point(70, 499)};
-        Point[] boxR = new Point[]{new Point(160, 350), new Point(160, 499)};
-        Point[] boxT = new Point[]{new Point(70, 350), new Point(160, 350)};
+        Point[] boxL = new Point[]{new Point(70, 350), new Point(70, 499), new Point(-1,0)}; // though it has two normals, the angle method takes care of that
+        Point[] boxR = new Point[]{new Point(160, 350), new Point(160, 499), new Point(1,0)};
+        Point[] boxT = new Point[]{new Point(70, 350), new Point(160, 350), new Point(0,1)};
 
-        Point[] squareL = new Point[]{new Point(230, 230), new Point(230, 340)};
-        Point[] squareR = new Point[]{new Point(380, 230), new Point(380, 340)};
-        Point[] squareT = new Point[]{new Point(235, 200), new Point(375, 200)};
+        Point[] squareL = new Point[]{new Point(230, 230), new Point(230, 340), new Point(-1,0)};
+        Point[] squareR = new Point[]{new Point(380, 230), new Point(380, 340), new Point(1,0)};
+        Point[] squareT = new Point[]{new Point(235, 200), new Point(375, 200), new Point(0,1)};
 
         
         this.segments.add(redBorder);

@@ -9,10 +9,12 @@ public class Tracer implements IConstants{
     private Box box;
     private BufferedImage canvasImage;
     private Random random;
+    private ArrayList<Point[]> segments;
 
     private Tracer(){
         box = new Box();
         random = new Random();
+        segments = box.getSegments();
     }
 
     public static Tracer getInstance(){
@@ -63,6 +65,36 @@ public class Tracer implements IConstants{
             // por mientras así, pero mejor poner que trace directo a algún source
             return new int[]{0,0,0}; // return black
         }
+
+        int intersectionDistance = Integer.MAX_VALUE;
+        int temp;
+        model.Point normal;
+
+        // gets the closest object in the path of the ray
+        for (Point[] segment : segments){
+            temp = Intersector.intersection(pOrigin, pDirection, segment[0], segment[1]);
+            if (temp > 0 & temp < intersectionDistance) {
+                intersectionDistance = temp;
+                normal = segment[2];
+            }
+        }
+
+        // if it does not intersect anything
+        if (intersectionDistance == Integer.MAX_VALUE) return new int[]{0,0,0};
+
+        // gets intersection point as well as the emittance and specularity of the surface where the ray bounces
+        Point intersectionPoint = Intersector.intersectionPoint(pOrigin, pDirection, intersectionDistance);
+        int[] emittance = box.getRGB(intersectionPoint.getX(), intersectionPoint.getY());
+        int specularity = box.getSpecularity(intersectionPoint.getX(), intersectionPoint.getY());
+
+        // reflection changes depending on surface type
+        if (specularity == SPECULAR){
+            // se calcula uno solo 
+            // calcula el ángulo y lo refleja
+        } else{
+            // se saca uno o varios random 
+        }
+
 
         
         return null;
