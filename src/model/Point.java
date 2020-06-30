@@ -23,7 +23,11 @@ public class Point {
 
     public Point subtract(Point pOther){
         return (new Point(this.x-pOther.getX(), this.y-pOther.getY()));
-    }   
+    }
+
+    public Point multiply(int pScalar){
+        return (new Point(this.x*pScalar, this.y*pScalar));
+    }
 
     public Point divide(double pScalar){
         int newX = (int) Math.round(this.x/pScalar);

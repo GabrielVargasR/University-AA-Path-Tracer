@@ -39,6 +39,13 @@ public class Intersector {
 
         double cosT = v1.dot(v2) / (Intersector.length(v1) * Intersector.length(v2));
         cosT = Math.abs(cosT);
-        return Math.acos(cosT);
+        return Math.acos(cosT); // a ratos y mejor devolver cosT
+    }
+
+    public static Point reflect(Point pIncoming, Point pNormal){
+        // reflected = incoming - 2(incoming . normal) * normal
+        // pNormal must be normalized
+        Point p = pNormal.multiply((2 * pIncoming.dot(pNormal)));
+        return pIncoming.subtract(p);
     }
 }
