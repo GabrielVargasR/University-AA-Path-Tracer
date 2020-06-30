@@ -19,11 +19,31 @@ public class Intersector {
         return -1;
     }
 
+    public static Point intersectionPoint(Point pOrigin, Point pDirection, int pDistance){
+        int x = pOrigin.getX() + (pDirection.getX()*pDistance);
+        int y = pOrigin.getY() + (pDirection.getY()*pDistance);
+        return (new Point(x,y));
+    }
+
     public static double lenght(Point pPoint){
         return Math.sqrt(Math.pow(pPoint.getX(),2)+Math.pow(pPoint.getY(), 2));
     }
 
     public static Point normalize(Point pPoint){
         return (pPoint.divide(lenght(pPoint)));
+    }
+
+    public static void main(String[] args) {
+        Point o = new Point(1,2);
+        Point d = new Point(1,0);
+        Point s1 = new Point(3,5);
+        Point s2 = new Point(3,1);
+        Point l1 = new Point(5,3);
+        Point l2 = new Point(5,1);
+
+        int i1 = Intersector.intersection(o, normalize(d), s1, s2);
+        int i2 = Intersector.intersection(o, normalize(d), l1, l2);
+        System.out.println(intersectionPoint(o, d, i1));
+        System.out.println(intersectionPoint(o, d, i2));
     }
 }
