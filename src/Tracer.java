@@ -39,7 +39,7 @@ public class Tracer implements IConstants{
                 // every sample is taken in random directions
                 dirPoint = new model.Point(random.nextInt(IMAGE_SIZE), random.nextInt(IMAGE_SIZE));
                 direction = Intersector.normalize(dirPoint.subtract(point)); // normalized for accuracy and simplifying calculations
-                calculatedColor = calculatePixel(poinr, direction, 0);
+                calculatedColor = calculatePixel(point, direction, 0);
 
                 // adds the calculated RGB values to the current color for each sample taken
                 pixColor[0] += calculatedColor[0];
