@@ -25,4 +25,7 @@ public interface IConstants {
     public static final int BACKGROUND_R = 255;
     public static final int BACKGROUND_G = 255;
     public static final int BACKGROUND_B = 230;
+
+    public static final int SPECULAR = 1;
+    public static final int OPAQUE = 0;
 }

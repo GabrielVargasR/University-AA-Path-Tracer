@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,7 +19,12 @@ public class Box implements IConstants{
     }
 
     public int[] getRGB(int pXCoord, int pYCoord){
-        return this.scene.get(pXCoord).get(pYCoord);
+        return Arrays.copyOfRange(this.scene.get(pXCoord).get(pYCoord), 0, 3);
+        
+    }
+
+    public int getSpecularity(int pXCoord, int pYCoord){
+        return this.scene.get(pXCoord).get(pYCoord)[3];
     }
 
     public ArrayList<Point> getSources(){
@@ -64,7 +70,7 @@ public class Box implements IConstants{
             scene.put(x, new HashMap<Integer, int[]>());
             temp = scene.get(x);
             for (int y = 0; y < IMAGE_SIZE; y++){
-                temp.put(y, new int[]{BACKGROUND_R, BACKGROUND_G, BACKGROUND_B});
+                temp.put(y, new int[]{BACKGROUND_R, BACKGROUND_G, BACKGROUND_B, OPAQUE});
             }
         }
     }
@@ -73,34 +79,34 @@ public class Box implements IConstants{
         // red wall
         for(int x = 0; x < 13; x++){
             for(int y = 0; y < IMAGE_SIZE; y++){
-                this.scene.get(x).replace(y, new int[]{RED_R, RED_G, RED_B});
+                this.scene.get(x).replace(y, new int[]{RED_R, RED_G, RED_B, SPECULAR});
             }
         }
 
         // green wall
         for(int x = 488; x < IMAGE_SIZE; x++){
             for(int y = 0; y < IMAGE_SIZE; y++){
-                this.scene.get(x).replace(y, new int[]{GREEN_R, GREEN_G, GREEN_B});
+                this.scene.get(x).replace(y, new int[]{GREEN_R, GREEN_G, GREEN_B, SPECULAR});
             }
         }
 
         // box
         for(int x = 70; x < 161; x++){
             for(int y = 350; y < IMAGE_SIZE; y++){
-                this.scene.get(x).replace(y, new int[]{BOX_R, BOX_G, BOX_B});
+                this.scene.get(x).replace(y, new int[]{BOX_R, BOX_G, BOX_B, OPAQUE});
             }
         }
 
-        // box
-        for(int x = 235; x < 376; x++) this.scene.get(x).replace(200, new int[]{BOX_R, BOX_G, BOX_B});
+        // segmented box
+        for(int x = 235; x < 376; x++) this.scene.get(x).replace(200, new int[]{BOX_R, BOX_G, BOX_B, OPAQUE});
         for (int y = 230; y < 341; y++){
-            this.scene.get(230).replace(y, new int[]{BOX_R, BOX_G, BOX_B});
-            this.scene.get(380).replace(y, new int[]{BOX_R, BOX_G, BOX_B});
+            this.scene.get(230).replace(y, new int[]{BOX_R, BOX_G, BOX_B, OPAQUE});
+            this.scene.get(380).replace(y, new int[]{BOX_R, BOX_G, BOX_B, OPAQUE});
         }
 
         // sources
-        this.scene.get(250).replace(0, new int[]{LIGHT_R, LIGHT_G, LIGHT_B});
-        this.scene.get(305).replace(201, new int[]{LIGHT_R, LIGHT_G, LIGHT_B});
+        this.scene.get(250).replace(0, new int[]{LIGHT_R, LIGHT_G, LIGHT_B, SPECULAR});
+        this.scene.get(305).replace(201, new int[]{LIGHT_R, LIGHT_G, LIGHT_B, SPECULAR});
     }
 
     public static void main(String[] args) {
