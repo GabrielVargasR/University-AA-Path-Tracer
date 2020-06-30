@@ -39,10 +39,11 @@ public class Intersector {
 
         double cosT = v1.dot(v2) / (Intersector.length(v1) * Intersector.length(v2));
         cosT = Math.abs(cosT);
-        return Math.acos(cosT); // a ratos y mejor devolver cosT
+        return Math.acos(cosT);
     }
 
     public static Point reflect(Point pIncoming, Point pNormal){
+        // https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
         // reflected = incoming - 2(incoming . normal) * normal
         // pNormal must be normalized
         Point p = pNormal.multiply((2 * pIncoming.dot(pNormal)));

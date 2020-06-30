@@ -68,7 +68,7 @@ public class Tracer implements IConstants{
 
         int intersectionDistance = Integer.MAX_VALUE;
         int temp;
-        model.Point normal;
+        model.Point normal = null;
 
         // gets the closest object in the path of the ray
         for (Point[] segment : segments){
@@ -89,8 +89,9 @@ public class Tracer implements IConstants{
 
         // reflection changes depending on surface type
         if (specularity == SPECULAR){
-            // se calcula uno solo 
-            // calcula el ángulo y lo refleja
+            // calculates direction of reflected ray and recursively calculates values for the pixel
+            Point reflectedDir = Intersector.reflect(pDirection, normal);
+            calculatePixel(intersectionPoint, reflectedDir, pDepthCount++);
         } else{
             // se saca uno o varios random 
         }
