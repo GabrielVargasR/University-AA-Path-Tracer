@@ -50,9 +50,9 @@ public class Tracer implements IConstants{
             }
 
             // averages the color values received using the amount of samples taken
-            pixColor[0] = (int) (pixColor[0] / SAMPLE_SIZE);
-            pixColor[1] = (int) (pixColor[1] / SAMPLE_SIZE);
-            pixColor[2] = (int) (pixColor[2] / SAMPLE_SIZE);
+            pixColor[0] = (int) (pixColor[0] / TRACE_DEPTH);
+            pixColor[1] = (int) (pixColor[1] / TRACE_DEPTH);
+            pixColor[2] = (int) (pixColor[2] / TRACE_DEPTH);
 
             // updates color por the pixel
             canvasImage.setRGB(point.getX(), point.getY(), (new Color(pixColor[0], pixColor[1], pixColor[2]).getRGB())); 
@@ -68,12 +68,14 @@ public class Tracer implements IConstants{
 
         int intersectionDistance = Integer.MAX_VALUE;
         int temp;
+        Point[] seg = null;
         model.Point normal = null;
 
         // gets the closest object in the path of the ray
         for (Point[] segment : segments){
             temp = Intersector.intersection(pOrigin, pDirection, segment[0], segment[1]);
             if (temp > 0 & temp < intersectionDistance) {
+                seg = segment;
                 intersectionDistance = temp;
                 normal = segment[2];
             }
@@ -85,19 +87,42 @@ public class Tracer implements IConstants{
         // gets intersection point as well as the emittance and specularity of the surface where the ray bounces
         Point intersectionPoint = Intersector.intersectionPoint(pOrigin, pDirection, intersectionDistance);
         int[] emittance = box.getRGB(intersectionPoint.getX(), intersectionPoint.getY());
+        int intensity = 1- (intersectionDistance/IMAGE_SIZE);
+        intensity = (int) Math.pow(intensity, 2);
         int specularity = box.getSpecularity(intersectionPoint.getX(), intersectionPoint.getY());
 
+        int[] color = new int[]{0,0,0};
         // reflection changes depending on surface type
         if (specularity == SPECULAR){
             // calculates direction of reflected ray and recursively calculates values for the pixel
             Point reflectedDir = Intersector.reflect(pDirection, normal);
-            calculatePixel(intersectionPoint, reflectedDir, pDepthCount++);
+            color =  calculatePixel(intersectionPoint, reflectedDir, pDepthCount++);
         } else{
-            // se saca uno o varios random 
+            // calculates some of the many rays reflected by the Opaque surface
+
+            Point sample;
+            int[] tempColor = new int[]{0,0,0};
+            for (int sampleCount = 0; sampleCount < SAMPLE_SIZE; sampleCount++){
+                sample = opaqueReflectionPoint(pOrigin, seg[0], seg[1]);
+                tempColor = calculatePixel(intersectionPoint, Intersector.normalize(sample.subtract(intersectionPoint)), sampleCount++);
+                color[0] += tempColor[0];
+                color[1] += tempColor[1];
+                color[2] += tempColor[2];
+            }
+
+            color[0] = (int) (color[0] / SAMPLE_SIZE);
+            color[1] = (int) (color[1] / SAMPLE_SIZE);
+            color[2] = (int) (color[2] / SAMPLE_SIZE);
         }
 
+        color[0] = emittance[0] * color[0] * intensity;
+        color[1] = emittance[1] * color[1] * intensity;
+        color[2] = emittance[2] * color[2] * intensity;
 
-        
+        return color;
+    }
+
+    private Point opaqueReflectionPoint(Point pPoint, Point pSeg1, Point pSeg2){
         return null;
     }
 
