@@ -108,7 +108,7 @@ public class Tracer implements IConstants{
             int[] tempColor = new int[]{0,0,0};
             for (int sampleCount = 0; sampleCount < SAMPLE_SIZE; sampleCount++){
                 sample = opaqueReflectionPoint(pOrigin, seg[0], seg[1]);
-                tempColor = calculatePixel(intersectionPoint, Intersector.normalize(sample.subtract(intersectionPoint)), sampleCount++);
+                tempColor = calculatePixel(intersectionPoint, Intersector.normalize(sample.subtract(intersectionPoint)), pDepthCount++);
                 color[0] += tempColor[0];
                 color[1] += tempColor[1];
                 color[2] += tempColor[2];
