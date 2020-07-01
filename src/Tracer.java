@@ -57,7 +57,12 @@ public class Tracer implements IConstants{
             pixColor[2] = (int) (pixColor[2] / TRACE_DEPTH);
 
             // updates color por the pixel
-            canvasImage.setRGB(point.getX(), point.getY(), (new Color(pixColor[0], pixColor[1], pixColor[2]).getRGB())); 
+            try{
+                canvasImage.setRGB(point.getX(), point.getY(), (new Color(pixColor[0], pixColor[1], pixColor[2]).getRGB())); 
+            } catch(Exception e){
+                System.out.println(pixColor[0] + ", " + pixColor[1] + ", " + pixColor[2]);
+                continue;
+            }
         }
     }
 
@@ -175,7 +180,7 @@ public class Tracer implements IConstants{
             intersects = false;
 
             for (Point[] segment : segments){
-                if (Intersector.intersection(pPoint, direction, segment[0], segment[1]) != -1) {
+                if (Intersector.intersection(pPoint, Intersector.normalize(direction), segment[0], segment[1]) != -1) {
                     intersects = true;
                     break;
                 }
@@ -189,9 +194,9 @@ public class Tracer implements IConstants{
                 intensity = 1 - (distance/IMAGE_SIZE);
                 intensity = (int) Math.pow(intensity, 2);
 
-                color[0] += intensity * emmitance[0] * LIGHT_R;
-                color[1] += intensity * emmitance[1] * LIGHT_G;
-                color[2] += intensity * emmitance[2] * LIGHT_B;
+                color[0] += intensity * emmitance[0] * (LIGHT_R/255);
+                color[1] += intensity * emmitance[1] * (LIGHT_G/255);
+                color[2] += intensity * emmitance[2] * (LIGHT_B/255);
             }
         }
 
@@ -200,7 +205,7 @@ public class Tracer implements IConstants{
             color[1] = color[1] / SOURCES;
             color[2] = color[2] / SOURCES;
         }
-
+        // System.out.println(color[0] + ", " + color[1] + ", " + color[2]);
         return color;
     }
 
