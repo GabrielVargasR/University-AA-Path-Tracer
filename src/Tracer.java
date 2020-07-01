@@ -86,6 +86,10 @@ public class Tracer implements IConstants{
 
         // gets intersection point as well as the emittance and specularity of the surface where the ray bounces
         Point intersectionPoint = Intersector.intersectionPoint(pOrigin, pDirection, intersectionDistance);
+
+        // check if intersection is inside of the frame
+        if (!isInside(intersectionPoint)) return new int[]{0,0,0};
+
         int[] emittance = box.getRGB(intersectionPoint.getX(), intersectionPoint.getY());
         int intensity = 1- (intersectionDistance/IMAGE_SIZE);
         intensity = (int) Math.pow(intensity, 2);
@@ -123,30 +127,58 @@ public class Tracer implements IConstants{
     }
 
     private Point opaqueReflectionPoint(Point pPoint, Point pSeg1, Point pSeg2){
-        return null;
+        boolean horizontal; // line is horizontal
+        boolean before = false; // point is before or below the segment
+
+        if (pSeg1.getX() == pSeg2.getX()){
+            horizontal = false;
+            if (pPoint.getX() < pSeg1.getX()) before = true;
+        } else { // segment has same y value
+            horizontal = true;
+            if (pPoint.getY() < pSeg1.getY()) before = true;
+        }
+
+        if (horizontal){
+            if (before){
+                int adjust = IMAGE_SIZE - pSeg1.getY();
+                return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(pSeg1.getY())+adjust));
+            } else{
+                return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(pSeg1.getY())));
+            }
+        } else{
+            if (before){
+                return (new Point(random.nextInt(pSeg1.getX()), random.nextInt(IMAGE_SIZE)));
+            } else{
+                int adjust = IMAGE_SIZE - pSeg1.getX();
+                return (new Point(random.nextInt(pSeg1.getX())+adjust, random.nextInt(IMAGE_SIZE)));
+            }
+        }
     }
 
+    private boolean isInside(Point pIntersection){
+        return !(pIntersection.getX() < 0 | pIntersection.getY() < 0 | pIntersection.getX() > IMAGE_SIZE | pIntersection.getY() > IMAGE_SIZE);
+    }
     public static void main(String[] args) {
-        // Main m = new Main();
-        // m.trace();
+        Main m = new Main();
+        m.trace();
 
-        Random rand = new Random();
+        // Random rand = new Random();
 
-        model.Point o = new Point(rand.nextInt(6), rand.nextInt(6));
-        model.Point d = new Point(rand.nextInt(6), rand.nextInt(6));
-        model.Point dir = d.subtract(o);
-        model.Point s1 = new Point(3,5);
-        model.Point s2 = new Point(3,1);
-        model.Point l1 = new Point(5,3);
-        model.Point l2 = new Point(5,5);
+        // model.Point o = new Point(rand.nextInt(6), rand.nextInt(6));
+        // model.Point d = new Point(rand.nextInt(6), rand.nextInt(6));
+        // model.Point dir = d.subtract(o);
+        // model.Point s1 = new Point(3,5);
+        // model.Point s2 = new Point(3,1);
+        // model.Point l1 = new Point(5,3);
+        // model.Point l2 = new Point(5,5);
 
-        int i1 = Intersector.intersection(o, Intersector.normalize(dir), s1, s2);
-        int i2 = Intersector.intersection(o, Intersector.normalize(dir), l1, l2);
+        // int i1 = Intersector.intersection(o, Intersector.normalize(dir), s1, s2);
+        // int i2 = Intersector.intersection(o, Intersector.normalize(dir), l1, l2);
 
-        // Al ser un grid tan pequeño, pueden hacer errores de precisión por rounding en el Point division
-        System.out.println("Point: " + o + " d: "+ d);
-        System.out.println("Direction: " + dir + ", Normalized: " + Intersector.normalize(dir) );
-        if (i1 != -1) System.out.println("inter1: "+Intersector.intersectionPoint(o, Intersector.normalize(dir), i1));
-        if (i2 != -1) System.out.println("inter2: "+Intersector.intersectionPoint(o, Intersector.normalize(dir), i2));
+        // // Al ser un grid tan pequeño, pueden hacer errores de precisión por rounding en el Point division
+        // System.out.println("Point: " + o + " d: "+ d);
+        // System.out.println("Direction: " + dir + ", Normalized: " + Intersector.normalize(dir) );
+        // if (i1 != -1) System.out.println("inter1: "+Intersector.intersectionPoint(o, Intersector.normalize(dir), i1));
+        // if (i2 != -1) System.out.println("inter2: "+Intersector.intersectionPoint(o, Intersector.normalize(dir), i2));
     }
 }

@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,8 +18,13 @@ public class Box implements IConstants{
     }
 
     public int[] getRGB(int pXCoord, int pYCoord){
-        return Arrays.copyOfRange(this.scene.get(pXCoord).get(pYCoord), 0, 3);
-        
+        int[] color = new int[3];
+        int[] temp = this.scene.get(pXCoord).get(pYCoord);
+
+        color[0] = temp[0];
+        color[1] = temp[1];
+        color[2] = temp[2];
+        return color;        
     }
 
     public int getSpecularity(int pXCoord, int pYCoord){
