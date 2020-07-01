@@ -10,11 +10,13 @@ public class Tracer implements IConstants{
     private BufferedImage canvasImage;
     private Random random;
     private ArrayList<Point[]> segments;
+    private ArrayList<Point> sources;
 
     private Tracer(){
         box = new Box();
         random = new Random();
         segments = box.getSegments();
+        sources = box.getSources();
     }
 
     public static Tracer getInstance(){
@@ -55,15 +57,13 @@ public class Tracer implements IConstants{
             pixColor[2] = (int) (pixColor[2] / TRACE_DEPTH);
 
             // updates color por the pixel
-            System.out.println(pixColor[0]+"."+pixColor[1]+"."+pixColor[2]);
             canvasImage.setRGB(point.getX(), point.getY(), (new Color(pixColor[0], pixColor[1], pixColor[2]).getRGB())); 
         }
     }
 
     private int[] calculatePixel(Point pOrigin, Point pDirection, int pDepthCount){
         if (pDepthCount >= TRACE_DEPTH){
-            // por mientras así, pero mejor poner que trace directo a algún source
-            return new int[]{0,0,0}; // return black
+            return castToSource(pOrigin);
         }
 
         int intersectionDistance = Integer.MAX_VALUE;
@@ -100,7 +100,7 @@ public class Tracer implements IConstants{
         if (specularity == SPECULAR){
             // calculates direction of reflected ray and recursively calculates values for the pixel
             Point reflectedDir = Intersector.reflect(pDirection, normal);
-            color =  calculatePixel(intersectionPoint, reflectedDir, ++pDepthCount);
+            color =  calculatePixel(intersectionPoint, Intersector.normalize(reflectedDir), ++pDepthCount);
         }
         else{
             // calculates some of the many rays reflected by the Opaque surface
@@ -109,11 +109,7 @@ public class Tracer implements IConstants{
             
             for (int sampleCount = 0; sampleCount < SAMPLE_SIZE; sampleCount++){
                 sample = opaqueReflectionPoint(pOrigin, seg[0], seg[1]);
-<<<<<<< HEAD
-                tempColor = calculatePixel(intersectionPoint, Intersector.normalize(sample.subtract(intersectionPoint)), pDepthCount++);
-=======
                 tempColor = calculatePixel(intersectionPoint, Intersector.normalize(sample.subtract(intersectionPoint)), ++pDepthCount);
->>>>>>> dev
                 color[0] += tempColor[0];
                 color[1] += tempColor[1];
                 color[2] += tempColor[2];
@@ -162,6 +158,51 @@ public class Tracer implements IConstants{
     private boolean isInside(Point pIntersection){
         return (pIntersection.getX() >= 0 & pIntersection.getY() >= 0 & pIntersection.getX() <= IMAGE_SIZE & pIntersection.getY() <= IMAGE_SIZE);
     }
+   
+    private int[] castToSource(Point pPoint){
+        // returns color reflected by the point due to the light shining on it
+
+        int[] color = new int[]{0,0,0};
+        int[] emmitance = box.getRGB(pPoint.getX(), pPoint.getY());
+        Point direction;
+        int distance;
+        int intensity;
+        boolean intersects;
+        int sourceAmount = 0;
+
+        for (Point source : sources){
+            direction = source.subtract(pPoint);
+            intersects = false;
+
+            for (Point[] segment : segments){
+                if (Intersector.intersection(pPoint, direction, segment[0], segment[1]) != -1) {
+                    intersects = true;
+                    sourceAmount++;
+                    break;
+                }
+            }
+
+            if (!intersects){
+                // calculates the distance between the point and the source to later calculate the intensity of the light
+                distance = (int) Intersector.length(direction.subtract(pPoint));
+                intensity = 1 - (distance/IMAGE_SIZE);
+                intensity = (int) Math.pow(intensity, 2);
+
+                color[0] += intensity * emmitance[0] * LIGHT_R;
+                color[1] += intensity * emmitance[1] * LIGHT_G;
+                color[2] += intensity * emmitance[2] * LIGHT_B;
+            }
+        }
+
+        if (sourceAmount == SOURCES){
+            color[0] = color[0] / SOURCES;
+            color[1] = color[1] / SOURCES;
+            color[2] = color[2] / SOURCES;
+        }
+
+        return color;
+    }
+
     public static void main(String[] args) {
         Main m = new Main();
         m.trace();

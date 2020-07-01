@@ -17,5 +17,6 @@ public class MainFrame extends JFrame{
 
     public void repaintImage(){
         this.image.repaint();
+        this.repaint();
     }
 }
