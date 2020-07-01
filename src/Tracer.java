@@ -190,7 +190,7 @@ public class Tracer implements IConstants{
                 // calculates the distance between the point and the source to later calculate the intensity of the light
                 sourceAmount++;
 
-                distance = (int) Intersector.length(direction.subtract(pPoint));
+                distance = (int) Intersector.length(source.subtract(pPoint));
                 intensity = 1 - (distance/IMAGE_SIZE);
                 intensity = (int) Math.pow(intensity, 2);
 
