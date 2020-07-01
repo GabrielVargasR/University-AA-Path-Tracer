@@ -20,11 +20,10 @@ public class Box implements IConstants{
     public int[] getRGB(int pXCoord, int pYCoord){
         int[] color = new int[3];
         int[] temp = this.scene.get(pXCoord).get(pYCoord);
-
         color[0] = temp[0];
         color[1] = temp[1];
         color[2] = temp[2];
-        return color;        
+        return color;
     }
 
     public int getSpecularity(int pXCoord, int pYCoord){
@@ -72,10 +71,10 @@ public class Box implements IConstants{
     private void initScene(){
         this.scene = new HashMap<Integer, HashMap<Integer, int[]>>();
         HashMap<Integer, int[]> temp;
-        for (int x = 0; x < IMAGE_SIZE; x++){
+        for (int x = 0; x <= IMAGE_SIZE; x++){
             scene.put(x, new HashMap<Integer, int[]>());
             temp = scene.get(x);
-            for (int y = 0; y < IMAGE_SIZE; y++){
+            for (int y = 0; y <= IMAGE_SIZE; y++){
                 temp.put(y, new int[]{BACKGROUND_R, BACKGROUND_G, BACKGROUND_B, OPAQUE});
             }
         }
@@ -84,21 +83,21 @@ public class Box implements IConstants{
     private void createScene(){
         // red wall
         for(int x = 0; x < 13; x++){
-            for(int y = 0; y < IMAGE_SIZE; y++){
+            for(int y = 0; y <= IMAGE_SIZE; y++){
                 this.scene.get(x).replace(y, new int[]{RED_R, RED_G, RED_B, SPECULAR});
             }
         }
 
         // green wall
-        for(int x = 488; x < IMAGE_SIZE; x++){
-            for(int y = 0; y < IMAGE_SIZE; y++){
+        for(int x = 488; x <= IMAGE_SIZE; x++){
+            for(int y = 0; y <= IMAGE_SIZE; y++){
                 this.scene.get(x).replace(y, new int[]{GREEN_R, GREEN_G, GREEN_B, SPECULAR});
             }
         }
 
         // box
         for(int x = 70; x < 161; x++){
-            for(int y = 350; y < IMAGE_SIZE; y++){
+            for(int y = 350; y <= IMAGE_SIZE; y++){
                 this.scene.get(x).replace(y, new int[]{BOX_R, BOX_G, BOX_B, OPAQUE});
             }
         }

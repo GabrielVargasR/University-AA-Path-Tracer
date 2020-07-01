@@ -55,12 +55,12 @@ public class Tracer implements IConstants{
             pixColor[2] = (int) (pixColor[2] / TRACE_DEPTH);
 
             // updates color por the pixel
+            System.out.println(pixColor[0]+"."+pixColor[1]+"."+pixColor[2]);
             canvasImage.setRGB(point.getX(), point.getY(), (new Color(pixColor[0], pixColor[1], pixColor[2]).getRGB())); 
         }
     }
 
     private int[] calculatePixel(Point pOrigin, Point pDirection, int pDepthCount){
-
         if (pDepthCount >= TRACE_DEPTH){
             // por mientras así, pero mejor poner que trace directo a algún source
             return new int[]{0,0,0}; // return black
@@ -100,15 +100,20 @@ public class Tracer implements IConstants{
         if (specularity == SPECULAR){
             // calculates direction of reflected ray and recursively calculates values for the pixel
             Point reflectedDir = Intersector.reflect(pDirection, normal);
-            color =  calculatePixel(intersectionPoint, reflectedDir, pDepthCount++);
-        } else{
+            color =  calculatePixel(intersectionPoint, reflectedDir, ++pDepthCount);
+        }
+        else{
             // calculates some of the many rays reflected by the Opaque surface
             Point sample;
             int[] tempColor = new int[]{0,0,0};
             
             for (int sampleCount = 0; sampleCount < SAMPLE_SIZE; sampleCount++){
                 sample = opaqueReflectionPoint(pOrigin, seg[0], seg[1]);
+<<<<<<< HEAD
                 tempColor = calculatePixel(intersectionPoint, Intersector.normalize(sample.subtract(intersectionPoint)), pDepthCount++);
+=======
+                tempColor = calculatePixel(intersectionPoint, Intersector.normalize(sample.subtract(intersectionPoint)), ++pDepthCount);
+>>>>>>> dev
                 color[0] += tempColor[0];
                 color[1] += tempColor[1];
                 color[2] += tempColor[2];
