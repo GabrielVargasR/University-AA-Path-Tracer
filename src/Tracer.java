@@ -156,29 +156,10 @@ public class Tracer implements IConstants{
     }
 
     private boolean isInside(Point pIntersection){
-        return !(pIntersection.getX() < 0 | pIntersection.getY() < 0 | pIntersection.getX() > IMAGE_SIZE | pIntersection.getY() > IMAGE_SIZE);
+        return (pIntersection.getX() >= 0 & pIntersection.getY() >= 0 & pIntersection.getX() <= IMAGE_SIZE & pIntersection.getY() <= IMAGE_SIZE);
     }
     public static void main(String[] args) {
         Main m = new Main();
         m.trace();
-
-        // Random rand = new Random();
-
-        // model.Point o = new Point(rand.nextInt(6), rand.nextInt(6));
-        // model.Point d = new Point(rand.nextInt(6), rand.nextInt(6));
-        // model.Point dir = d.subtract(o);
-        // model.Point s1 = new Point(3,5);
-        // model.Point s2 = new Point(3,1);
-        // model.Point l1 = new Point(5,3);
-        // model.Point l2 = new Point(5,5);
-
-        // int i1 = Intersector.intersection(o, Intersector.normalize(dir), s1, s2);
-        // int i2 = Intersector.intersection(o, Intersector.normalize(dir), l1, l2);
-
-        // // Al ser un grid tan pequeño, pueden hacer errores de precisión por rounding en el Point division
-        // System.out.println("Point: " + o + " d: "+ d);
-        // System.out.println("Direction: " + dir + ", Normalized: " + Intersector.normalize(dir) );
-        // if (i1 != -1) System.out.println("inter1: "+Intersector.intersectionPoint(o, Intersector.normalize(dir), i1));
-        // if (i2 != -1) System.out.println("inter2: "+Intersector.intersectionPoint(o, Intersector.normalize(dir), i2));
     }
 }
