@@ -177,13 +177,14 @@ public class Tracer implements IConstants{
             for (Point[] segment : segments){
                 if (Intersector.intersection(pPoint, direction, segment[0], segment[1]) != -1) {
                     intersects = true;
-                    sourceAmount++;
                     break;
                 }
             }
 
             if (!intersects){
                 // calculates the distance between the point and the source to later calculate the intensity of the light
+                sourceAmount++;
+
                 distance = (int) Intersector.length(direction.subtract(pPoint));
                 intensity = 1 - (distance/IMAGE_SIZE);
                 intensity = (int) Math.pow(intensity, 2);
