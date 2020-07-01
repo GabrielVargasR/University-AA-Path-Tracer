@@ -19,9 +19,9 @@ public class Intersector {
         return -1;
     }
 
-    public static Point intersectionPoint(Point pOrigin, Point pDirection, int pDistance){
-        int x = pOrigin.getX() + (pDirection.getX()*pDistance);
-        int y = pOrigin.getY() + (pDirection.getY()*pDistance);
+    public static Point intersectionPoint(Point pOrigin, Point pDirection, double pDistance){
+        int x = pOrigin.getX() + (int)(pDirection.getX()*pDistance);
+        int y = pOrigin.getY() + (int)(pDirection.getY()*pDistance);
         return (new Point(x,y));
     }
 
