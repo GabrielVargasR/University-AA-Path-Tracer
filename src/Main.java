@@ -38,7 +38,11 @@ public class Main {
         this.renderImage = new Runnable(){
             @Override
             public void run() {
-                tracer.tracePath();
+                try{
+                    tracer.tracePath();
+                } catch (StackOverflowError e){
+                    e.printStackTrace();
+                }
             }
         };
     } 

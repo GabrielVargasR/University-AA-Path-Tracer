@@ -61,7 +61,7 @@ public class Tracer implements IConstants{
 
     private int[] calculatePixel(Point pOrigin, Point pDirection, int pDepthCount){
 
-        if (pDepthCount == TRACE_DEPTH){
+        if (pDepthCount >= TRACE_DEPTH){
             // por mientras así, pero mejor poner que trace directo a algún source
             return new int[]{0,0,0}; // return black
         }
@@ -82,7 +82,7 @@ public class Tracer implements IConstants{
         }
 
         // if it does not intersect anything
-        if (intersectionDistance == Integer.MAX_VALUE) return new int[]{0,0,0};
+        if (seg == null) return new int[]{0,0,0};
 
         // gets intersection point as well as the emittance and specularity of the surface where the ray bounces
         Point intersectionPoint = Intersector.intersectionPoint(pOrigin, pDirection, intersectionDistance);
@@ -91,7 +91,7 @@ public class Tracer implements IConstants{
         if (!isInside(intersectionPoint)) return new int[]{0,0,0};
 
         int[] emittance = box.getRGB(intersectionPoint.getX(), intersectionPoint.getY());
-        int intensity = 1- (intersectionDistance/IMAGE_SIZE);
+        int intensity = 1 - (intersectionDistance/IMAGE_SIZE);
         intensity = (int) Math.pow(intensity, 2);
         int specularity = box.getSpecularity(intersectionPoint.getX(), intersectionPoint.getY());
 
@@ -103,9 +103,9 @@ public class Tracer implements IConstants{
             color =  calculatePixel(intersectionPoint, reflectedDir, pDepthCount++);
         } else{
             // calculates some of the many rays reflected by the Opaque surface
-
             Point sample;
             int[] tempColor = new int[]{0,0,0};
+            
             for (int sampleCount = 0; sampleCount < SAMPLE_SIZE; sampleCount++){
                 sample = opaqueReflectionPoint(pOrigin, seg[0], seg[1]);
                 tempColor = calculatePixel(intersectionPoint, Intersector.normalize(sample.subtract(intersectionPoint)), sampleCount++);
@@ -113,7 +113,6 @@ public class Tracer implements IConstants{
                 color[1] += tempColor[1];
                 color[2] += tempColor[2];
             }
-
             color[0] = (int) (color[0] / SAMPLE_SIZE);
             color[1] = (int) (color[1] / SAMPLE_SIZE);
             color[2] = (int) (color[2] / SAMPLE_SIZE);
