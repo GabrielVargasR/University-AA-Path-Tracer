@@ -49,4 +49,62 @@ public class Intersector {
         Point p = pNormal.multiply((2 * pIncoming.dot(pNormal)));
         return pIncoming.subtract(p);
     }
+
+    public static void main(String[] args) {
+        Point[] opSegment = new Point[] {new Point(5,1), new Point(5,6), new Point(-1,0)}; // opaque segment
+        Point[] specSegment = new Point[] {new Point(4,1), new Point(4,6), new Point(1,0)}; // specular segment
+        Point[][] segments = new Point[][] {opSegment, specSegment};
+        // the normals to the segments were chosen to go in opposit directions for testing purposes
+
+        // Points that will be used as origins to the rays
+        Point left = new Point(3,1); // point to the left of the segments
+        Point right = new Point(7,4); // point to the right of the segments
+
+        // General direction vectors
+        Point east = new Point(1,0);
+        Point west = new Point(-1,0);
+        Point north = new Point(0,1);
+        Point south = new Point(0,-1);
+        Point ne = new Point(1,1);
+        Point nw = new Point(1,-1);
+        Point se = new Point(-1,1);
+        Point sw = new Point(-1,-1);
+
+
+        int left2spec = intersection(left, ne, specSegment[0], specSegment[1]);
+        Point l2sPoint = intersectionPoint(left, ne, left2spec);
+        System.out.println("Intersection distance from point left to specSegment: " + left2spec);
+        System.out.println("Intersection point between point left to specSegment: " + l2sPoint.getX() + ", " + l2sPoint.getY());
+
+        int left2op = intersection(left, ne, opSegment[0], opSegment[1]);
+        Point l2oPoint = intersectionPoint(left, ne, left2op);
+        System.out.println("Intersection distance from point left to opSegment: " + left2op);
+        System.out.println("Intersection point between point left to opSegment: " + l2oPoint.getX() + ", " + l2oPoint.getY());
+
+        System.out.println("Direction of reflected left with ne: " + reflect(ne, specSegment[2]));
+
+        int right2op = intersection(right, sw, opSegment[0], opSegment[1]);
+        Point r2oPoint = intersectionPoint(right, sw, right2op);
+        System.out.println("Intersection distance from point right to opSegment: " + right2op);
+        System.out.println("Intersection point between point right to opSegment: " + r2oPoint.getX() + ", " + r2oPoint.getY());
+
+        double intersectionDistance = Integer.MAX_VALUE;
+        double temp;
+        Point[] seg = null;
+
+        // gets the closest object in the path of the ray
+        for (Point[] segment : segments){
+            temp = Intersector.intersection(right, west, segment[0], segment[1]); // can be tested with left, ne for instance
+            if (temp > 0 & temp < intersectionDistance) {
+                seg = segment;
+                intersectionDistance = temp;
+            }
+        }
+
+        boolean inter = (seg[0].getX() == 4) ? false:true;
+        if (inter){
+            System.out.println("Closest segment if opSegment");
+        } else System.out.println("Closest segment if specSegment");
+
+    }
 }
