@@ -66,6 +66,7 @@ public class Tracer implements IConstants{
 
                 // updates color por the pixel
                 try{
+                    // System.out.println(pixColor[0] + ", " + pixColor[1] + ", " + pixColor[2]);
                     canvasImage.setRGB(point.getX(), point.getY(), (new Color((int)pixColor[0], (int)pixColor[1], (int)pixColor[2]).getRGB()));
                 } 
                 catch(Exception e){
@@ -79,7 +80,7 @@ public class Tracer implements IConstants{
     }
 
     private double[] calculatePixel(Point pOrigin, Point pDirection, int pDepthCount){
-        if (pDepthCount >= TRACE_DEPTH){
+        if (pDepthCount > TRACE_DEPTH){
             return castToSource(pOrigin);
         }
 
@@ -124,23 +125,21 @@ public class Tracer implements IConstants{
             // calculates some of the many rays reflected by the Opaque surface
             Point sample;
             double[] tempColor = new double[]{0,0,0};
-            int noLightCount = 0;
+            boolean iluminated = false;
             
             for (int sampleCount = 0; sampleCount < SAMPLE_SIZE; sampleCount++){
                 sample = opaqueReflectionPoint(pOrigin, seg[0], seg[1]);
                 tempColor = calculatePixel(intersectionPoint, Intersector.normalize(sample.subtract(intersectionPoint)), ++pDepthCount);
 
-                if (tempColor[0] == -1 & tempColor[1] == -1 & tempColor[2] == -1) {
-                    noLightCount++;
-                    continue;
-                }
+                if (tempColor[0] == -1 & tempColor[1] == -1 & tempColor[2] == -1) continue;
 
+                iluminated = true;
                 color[0] += tempColor[0];
                 color[1] += tempColor[1];
                 color[2] += tempColor[2];
             }
 
-            if (noLightCount == SAMPLE_SIZE) return tempColor;
+            if (!iluminated) return new double[]{-1,-1,-1};
             color[0] = (color[0] / SAMPLE_SIZE);
             color[1] = (color[1] / SAMPLE_SIZE);
             color[2] = (color[2] / SAMPLE_SIZE);
@@ -224,11 +223,11 @@ public class Tracer implements IConstants{
             }
         }
 
-        if (sourceAmount > 0){
+        if (sourceAmount>0){
             color[0] = color[0] / sourceAmount;
             color[1] = color[1] / sourceAmount;
             color[2] = color[2] / sourceAmount;
-        } else{
+        } else {
             return (new double[] {-1,-1,-1});
         }
 
