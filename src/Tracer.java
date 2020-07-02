@@ -97,7 +97,7 @@ public class Tracer implements IConstants{
         // check if intersection is inside of the frame
         if (!isInside(intersectionPoint)) return new double[]{0,0,0};
 
-        int[] emittance = box.getRGB(intersectionPoint.getX(), intersectionPoint.getY());
+        int[] emittance = box.getRGB(pOrigin.getX(), pOrigin.getY());
         double intensity = 1 - (intersectionDistance/(double)IMAGE_SIZE);
         intensity = Math.pow(intensity, 2);
         int specularity = box.getSpecularity(intersectionPoint.getX(), intersectionPoint.getY());
