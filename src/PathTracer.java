@@ -54,7 +54,7 @@ public class PathTracer implements IConstants{
                 free = true;
 
                 for(model.Point[] segment : segments){
-                    distance = Intersector.intersection(point, Intersector.normalize(direction), segment[0], segment[1]);
+                    distance = (int)Intersector.intersection(point, Intersector.normalize(direction), segment[0], segment[1]);
 
                     if (distance != -1 & distance < length){
                         free = false;
