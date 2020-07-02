@@ -50,6 +50,37 @@ public class Intersector {
         return pIncoming.subtract(p);
     }
 
+    // method was added from Tracer for testing purposes
+    public static Point opaqueReflectionPoint(Point pPoint, Point pSeg1, Point pSeg2){
+        java.util.Random random = new java.util.Random();
+        boolean horizontal; // line is horizontal
+        boolean before = false; // point is before or below the segment
+
+        if (pSeg1.getX() == pSeg2.getX()){
+            horizontal = false;
+            if (pPoint.getX() < pSeg1.getX()) before = true;
+        } else { // segment has same y value
+            horizontal = true;
+            if (pPoint.getY() < pSeg1.getY()) before = true;
+        }
+
+        if (horizontal){
+            if (before){
+                int adjust = 10 - pSeg1.getY();
+                return (new Point(random.nextInt(10), random.nextInt(pSeg1.getY())+adjust));
+            } else{
+                return (new Point(random.nextInt(10), random.nextInt(pSeg1.getY())));
+            }
+        } else{
+            if (before){
+                return (new Point(random.nextInt(pSeg1.getX()), random.nextInt(10)));
+            } else{
+                int adjust = 10 - pSeg1.getX();
+                return (new Point(random.nextInt(pSeg1.getX())+adjust, random.nextInt(10)));
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Point[] opSegment = new Point[] {new Point(5,1), new Point(5,6), new Point(-1,0)}; // opaque segment
         Point[] specSegment = new Point[] {new Point(4,1), new Point(4,6), new Point(1,0)}; // specular segment
@@ -106,5 +137,7 @@ public class Intersector {
             System.out.println("Closest segment if opSegment");
         } else System.out.println("Closest segment if specSegment");
 
+        Point randomDirPoint = opaqueReflectionPoint(right, opSegment[0], opSegment[1]);
+        System.out.println("Reflected direction = " + normalize(randomDirPoint.subtract(r2oPoint)));
     }
 }
