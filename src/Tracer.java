@@ -142,15 +142,16 @@ public class Tracer implements IConstants{
             if (pPoint.getX() < pSeg1.getX()) before = true;
         } else { // segment has same y value
             horizontal = true;
-            if (pPoint.getY() < pSeg1.getY()) before = true;
+            if (pPoint.getY() > pSeg1.getY()) before = true;
         }
 
         if (horizontal){
+            int y = (pSeg1.getY() != 0) ? pSeg1.getY() : 1;
             if (before){
                 int adjust = IMAGE_SIZE - pSeg1.getY();
-                return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(pSeg1.getY())+adjust));
+                return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(++y)+adjust));
             } else{
-                return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(pSeg1.getY()+1)));
+                return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(y)));
             }
         } else{
             if (before){
