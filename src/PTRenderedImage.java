@@ -1,16 +1,13 @@
 import javax.swing.*;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.*;
-import javax.imageio.*;
-import java.awt.event.*;
+// import model.Box;
+import model.IConstants;
 
-public class PTRenderedImage extends JPanel{
+import static java.awt.Color.BLACK;
+
+public class PTRenderedImage extends JPanel implements IConstants{
 
 	private static final long serialVersionUID = 8877854516634954684L;
 	private BufferedImage bufferedImage;
@@ -18,23 +15,14 @@ public class PTRenderedImage extends JPanel{
 
 	public PTRenderedImage() {
 		super();
-		super.setBounds(0,0,500,500);
-		super.setLayout(null);
-		this.bufferedImage = loadImg();
+		setPreferredSize(new Dimension(IMAGE_SIZE,IMAGE_SIZE));
+		this.bufferedImage = new BufferedImage(IMAGE_SIZE, IMAGE_SIZE, BufferedImage.TYPE_INT_RGB);
 		this.graphics = (Graphics2D) bufferedImage.getGraphics();
-		this.graphics.drawImage(this.bufferedImage, 0, 0, 500, 500, null);
-		this.setVisible(true);
-	}
-
-	private BufferedImage loadImg(){
-		try{
-			File img = new File("aaa.jpg");
-			BufferedImage bf = ImageIO.read(img);
-			return bf;
-		} catch (IOException e){
-			e.printStackTrace();
-			return null;
-		}
+		this.graphics.setPaint(BLACK);
+		this.graphics.fillRect(0,0,bufferedImage.getWidth(),bufferedImage.getHeight());
+		Tracer.getInstance().setImage(this.bufferedImage);
+		PathTracer.getInstance().setImage(this.bufferedImage);
+		this.graphics.drawImage(bufferedImage, 0, 0, IMAGE_SIZE, IMAGE_SIZE, null);
 	}
 
 	@Override
@@ -42,9 +30,16 @@ public class PTRenderedImage extends JPanel{
 		g.drawImage(bufferedImage, 0, 0, null);
 	}
 
-	public void changeColor(int x, int y){
-		System.out.println(this.bufferedImage.getRGB(x, y));
-		this.bufferedImage.setRGB(x, y, Color.RED.getRGB());
-		repaint();
-	}
+	// private BufferedImage loadScene(Box pBox){
+	// 	model.Box b = pBox;
+	// 	BufferedImage img = new BufferedImage(IMAGE_SIZE, IMAGE_SIZE, BufferedImage.TYPE_INT_RGB);
+
+	// 	for (int x = 0; x < IMAGE_SIZE; x++){
+	// 		for (int y = 0; y < IMAGE_SIZE; y++){
+	// 			int[] color = b.getRGB(x, y);
+	// 			img.setRGB(x, y, (new Color(color[0], color[1], color[2])).getRGB());
+	// 		}
+	// 	}
+	// 	return img;
+	// }
 }
