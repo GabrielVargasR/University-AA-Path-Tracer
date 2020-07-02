@@ -80,9 +80,9 @@ public class PathTracer implements IConstants{
     }
 
     private int[] updateColor(int[] pCurrent, double pIntensity){
-        int red = (int) (pCurrent[0] * pIntensity * (LIGHT_R/255));
-        int green = (int) (pCurrent[1] * pIntensity * (LIGHT_G/255));
-        int blue = (int) (pCurrent[2] * pIntensity * (LIGHT_B/255));
+        int red = (int) (pCurrent[0] + (pIntensity * LIGHT_R/255));
+        int green = (int) (pCurrent[1] + (pIntensity * LIGHT_G/255));
+        int blue = (int) (pCurrent[2] + (pIntensity * LIGHT_B/255));
         return new int[]{red, green, blue};
     }
 
