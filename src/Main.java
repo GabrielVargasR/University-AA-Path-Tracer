@@ -10,6 +10,7 @@ public class Main {
     private MainFrame frame;
     // private PathTracer pathTracer;
     private Tracer tracer;
+    private PathTracer pt;
     private Runnable paintImage;
     private Runnable renderImage;
 
@@ -19,6 +20,7 @@ public class Main {
         this.frame = new MainFrame();
         // this.pathTracer = PathTracer.getInstance();
         this.tracer = Tracer.getInstance();
+        this.pt = PathTracer.getInstance();
         this.createRunnables();
     }
 
@@ -39,7 +41,8 @@ public class Main {
             @Override
             public void run() {
                 try{
-                    tracer.tracePath();
+                    // tracer.tracePath();
+                    pt.tracePath();
                 } catch (StackOverflowError e){
                     e.printStackTrace();
                 }

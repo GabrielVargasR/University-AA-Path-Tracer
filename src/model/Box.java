@@ -41,8 +41,14 @@ public class Box implements IConstants{
     private void createSegments(){
         // First two points are the points for the segment
         // Third point is the direction of the normal line
-        Point[] redBorder = new Point[]{new Point(12,0), new Point(12, 499), new Point(1,0)};
-        Point[] greenBorder = new Point[]{new Point(488,0), new Point(488, 499), new Point(-1,0)};
+
+        Point[] frameL = new Point[]{new Point(0,0), new Point(500,0), new Point(1,0)};
+        Point[] frameR = new Point[]{new Point(500,0), new Point(500,500), new Point(-1,0)};
+        Point[] frameT = new Point[]{new Point(0,0), new Point(500,0), new Point(0,-1)};
+        Point[] frameB = new Point[]{new Point(0,500), new Point(500,500), new Point(0,1)};
+
+        // Point[] redBorder = new Point[]{new Point(12,0), new Point(12, 499), new Point(1,0)};
+        // Point[] greenBorder = new Point[]{new Point(488,0), new Point(488, 499), new Point(-1,0)};
 
         Point[] boxL = new Point[]{new Point(70, 350), new Point(70, 499), new Point(-1,0)}; // though it has two normals, the angle method takes care of that
         Point[] boxR = new Point[]{new Point(160, 350), new Point(160, 499), new Point(1,0)};
@@ -52,9 +58,12 @@ public class Box implements IConstants{
         Point[] squareR = new Point[]{new Point(380, 230), new Point(380, 340), new Point(1,0)};
         Point[] squareT = new Point[]{new Point(235, 200), new Point(375, 200), new Point(0,1)};
 
-        
-        this.segments.add(redBorder);
-        this.segments.add(greenBorder);
+        this.segments.add(frameL);
+        this.segments.add(frameR);
+        this.segments.add(frameT);
+        this.segments.add(frameB);
+        // this.segments.add(redBorder);
+        // this.segments.add(greenBorder);
         this.segments.add(boxL);
         this.segments.add(boxR);
         this.segments.add(boxT);
@@ -66,6 +75,7 @@ public class Box implements IConstants{
     private void createSources(){
         sources.add(new Point(250, 0));
         sources.add(new Point(305, 201));
+        sources.add(new Point(50,300));
     }
 
     private void initScene(){

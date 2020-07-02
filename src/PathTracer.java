@@ -63,7 +63,8 @@ public class PathTracer implements IConstants{
                 }
 
                 if (free){
-                    intensity = Math.pow((1-(length / IMAGE_SIZE)), 2);
+                    // intensity = Math.pow((1-(length / IMAGE_SIZE)), 2);
+                    intensity = 1-(length / IMAGE_SIZE);
                     pixValue = box.getRGB(point.getX(), point.getY());
                     pixValue = updateColor(pixValue, intensity);
 
@@ -80,15 +81,20 @@ public class PathTracer implements IConstants{
     }
 
     private int[] updateColor(int[] pCurrent, double pIntensity){
-        int red = (int) (pCurrent[0] * pIntensity * (LIGHT_R/255));
-        int green = (int) (pCurrent[1] * pIntensity * (LIGHT_G/255));
-        int blue = (int) (pCurrent[2] * pIntensity * (LIGHT_B/255));
+        int red = (int) (pCurrent[0] + (pIntensity));
+        int green = (int) (pCurrent[1] + (pIntensity));
+        int blue = (int) (pCurrent[2] + (pIntensity * 0.75));
         return new int[]{red, green, blue};
     }
 
     private void updateImage(int pX, int pY, int[] pPixColor){
         // System.out.println(rgbValues[0] +", "+rgbValues[1]+", "+ rgbValues[2]);
-        Color color = new Color(pPixColor[0]/SOURCES, pPixColor[2]/SOURCES, pPixColor[2]/SOURCES);
+        Color color = new Color(pPixColor[0]/(SOURCES+1), pPixColor[2]/(SOURCES+1), pPixColor[2]/(SOURCES+1));
         canvasImage.setRGB(pX, pY, color.getRGB());
+    }
+
+    public static void main(String[] args) {
+        Main m = new Main();
+        m.trace();
     }
 }
