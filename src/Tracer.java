@@ -46,23 +46,24 @@ public class Tracer implements IConstants{
                 calculatedColor = calculatePixel(point, direction, 0);
 
                 // adds the calculated RGB values to the current color for each sample taken
-                pixColor[0] += calculatedColor[0];
-                pixColor[1] += calculatedColor[1];
-                pixColor[2] += calculatedColor[2];
+                pixColor[0] += calculatedColor[0]/TRACE_DEPTH;
+                pixColor[1] += calculatedColor[1]/TRACE_DEPTH;
+                pixColor[2] += calculatedColor[2]/TRACE_DEPTH;
             }
 
             // averages the color values received using the amount of samples taken
-            pixColor[0] =  (pixColor[0] / SAMPLE_SIZE*TRACE_DEPTH);
-            pixColor[1] =  (pixColor[1] / SAMPLE_SIZE*TRACE_DEPTH);
-            pixColor[2] =  (pixColor[2] / SAMPLE_SIZE*TRACE_DEPTH);
+            pixColor[0] =  (pixColor[0] / SAMPLE_SIZE)%255;
+            pixColor[1] =  (pixColor[1] / SAMPLE_SIZE)%255;
+            pixColor[2] =  (pixColor[2] / SAMPLE_SIZE)%255;
 
             // updates color por the pixel
             try{
                 canvasImage.setRGB(point.getX(), point.getY(), (new Color((int)pixColor[0], (int)pixColor[1], (int)pixColor[2]).getRGB())); 
                 //System.out.println(pixColor[0] + ", " + pixColor[1] + ", " + pixColor[2]);
-            } catch(Exception e){
-               // System.out.println(pixColor[0] + ", " + pixColor[1] + ", " + pixColor[2]);
-                continue;
+            } 
+            catch(Exception e){
+                System.out.println("Error color mas de 255");
+                System.out.println(pixColor[0] + ", " + pixColor[1] + ", " + pixColor[2]);
             }
         }
     }
@@ -124,13 +125,9 @@ public class Tracer implements IConstants{
             color[1] = (color[1] / SAMPLE_SIZE);
             color[2] = (color[2] / SAMPLE_SIZE);
         }
-
-        //color[0] = intensity * (double)emittance[0];
-        //color[1] = intensity * (double)emittance[1];
-        //color[2] = intensity * (double)emittance[2];
-        color[0] = intensity * (double)emittance[0] * (color[0]/255);
-        color[1] = intensity * (double)emittance[1] * (color[1]/255);
-        color[2] = intensity * (double)emittance[2] * (color[2]/255);
+        color[0] = intensity * (color[0]) + (double)emittance[0];
+        color[1] = intensity * (color[1]) + (double)emittance[1];
+        color[2] = intensity * (color[2]) + (double)emittance[2];
        //System.out.println(color[0] + ", " + color[1] + ", " + color[2]);
 
         return color;
@@ -153,14 +150,14 @@ public class Tracer implements IConstants{
                 int adjust = IMAGE_SIZE - pSeg1.getY();
                 return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(pSeg1.getY())+adjust));
             } else{
-                return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(pSeg1.getY())));
+                return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(pSeg1.getY()+1)));
             }
         } else{
             if (before){
-                return (new Point(random.nextInt(pSeg1.getX()), random.nextInt(IMAGE_SIZE)));
+                return (new Point(random.nextInt(pSeg1.getX()+1), random.nextInt(IMAGE_SIZE)));
             } else{
                 int adjust = IMAGE_SIZE - pSeg1.getX();
-                return (new Point(random.nextInt(pSeg1.getX())+adjust, random.nextInt(IMAGE_SIZE)));
+                return (new Point(random.nextInt(pSeg1.getX()+1)+adjust, random.nextInt(IMAGE_SIZE)));
             }
         }
     }
@@ -175,7 +172,7 @@ public class Tracer implements IConstants{
         double[] color = new double[]{0,0,0};
         int[] emittance = box.getRGB(pPoint.getX(), pPoint.getY());
         Point direction;
-        int distance;
+        double distance;
         double intensity;
         boolean intersects;
         int sourceAmount = 0;
@@ -195,16 +192,14 @@ public class Tracer implements IConstants{
                 // calculates the distance between the point and the source to later calculate the intensity of the light
                 sourceAmount++;
 
-                distance = (int) Intersector.length(source.subtract(pPoint));
+                distance = Intersector.length(source.subtract(pPoint));
                 intensity = 1 - (distance/IMAGE_SIZE);
                 intensity = Math.pow(intensity, 2);
 
-                //color[0] += intensity * (double)emittance[0];
-                //color[1] += intensity * (double)emittance[1];
-                //color[2] += intensity * (double)emittance[2];
-                color[0] += intensity * (double)emittance[0] * ((double)LIGHT_R/255);
-                color[1] += intensity * (double)emittance[1] * ((double)LIGHT_G/255);
-                color[2] += intensity * (double)emittance[2] * ((double)LIGHT_B/255);
+                //Calculate color
+                color[0] += intensity * ((double)LIGHT_R) + (double)emittance[0];
+                color[1] += intensity * ((double)LIGHT_G) + (double)emittance[1];
+                color[2] += intensity * ((double)LIGHT_B) + (double)emittance[2];
             }
         }
 
