@@ -34,6 +34,7 @@ public class Tracer implements IConstants{
         model.Point direction;
         double[] pixColor;
         double[] calculatedColor;
+        boolean iluminated = false;
 
         while (true){
             point = new model.Point(random.nextInt(IMAGE_SIZE), random.nextInt(IMAGE_SIZE)); // chooses points at random
@@ -41,29 +42,38 @@ public class Tracer implements IConstants{
             
             for (int sample = 0; sample < SAMPLE_SIZE; sample++){
                 // every sample is taken in random directions
+                iluminated = false;
                 dirPoint = new model.Point(random.nextInt(IMAGE_SIZE), random.nextInt(IMAGE_SIZE));
                 direction = Intersector.normalize(dirPoint.subtract(point)); // normalized for accuracy and simplifying calculations
                 calculatedColor = calculatePixel(point, direction, 0);
 
-                // adds the calculated RGB values to the current color for each sample taken
-                pixColor[0] += calculatedColor[0]/TRACE_DEPTH;
-                pixColor[1] += calculatedColor[1]/TRACE_DEPTH;
-                pixColor[2] += calculatedColor[2]/TRACE_DEPTH;
+                if (calculatedColor[0] == -1 & calculatedColor[1] == -1 & calculatedColor[2] == -1) {
+                    continue;
+                } else {
+                    // adds the calculated RGB values to the current color for each sample taken
+                    iluminated = true;
+                    pixColor[0] += calculatedColor[0]/TRACE_DEPTH;
+                    pixColor[1] += calculatedColor[1]/TRACE_DEPTH;
+                    pixColor[2] += calculatedColor[2]/TRACE_DEPTH;
+                }   
             }
 
-            // averages the color values received using the amount of samples taken
-            pixColor[0] =  (pixColor[0] / SAMPLE_SIZE)%255;
-            pixColor[1] =  (pixColor[1] / SAMPLE_SIZE)%255;
-            pixColor[2] =  (pixColor[2] / SAMPLE_SIZE)%255;
+            if (iluminated){
+                // averages the color values received using the amount of samples taken
+                pixColor[0] =  (pixColor[0] / SAMPLE_SIZE)%255;
+                pixColor[1] =  (pixColor[1] / SAMPLE_SIZE)%255;
+                pixColor[2] =  (pixColor[2] / SAMPLE_SIZE)%255;
 
-            // updates color por the pixel
-            try{
-                canvasImage.setRGB(point.getX(), point.getY(), (new Color((int)pixColor[0], (int)pixColor[1], (int)pixColor[2]).getRGB())); 
-                //System.out.println(pixColor[0] + ", " + pixColor[1] + ", " + pixColor[2]);
-            } 
-            catch(Exception e){
-                System.out.println("Error color mas de 255");
-                System.out.println(pixColor[0] + ", " + pixColor[1] + ", " + pixColor[2]);
+                // updates color por the pixel
+                try{
+                    canvasImage.setRGB(point.getX(), point.getY(), (new Color((int)pixColor[0], (int)pixColor[1], (int)pixColor[2]).getRGB()));
+                } 
+                catch(Exception e){
+                    System.out.println("Error color mas de 255");
+                    System.out.println(pixColor[0] + ", " + pixColor[1] + ", " + pixColor[2]);
+                }
+            } else{
+                canvasImage.setRGB(point.getX(), point.getY(), Color.BLACK.getRGB());
             }
         }
     }
@@ -108,19 +118,29 @@ public class Tracer implements IConstants{
             // calculates direction of reflected ray and recursively calculates values for the pixel
             Point reflectedDir = Intersector.reflect(pDirection, normal);
             color =  calculatePixel(intersectionPoint, Intersector.normalize(reflectedDir), ++pDepthCount);
+            if (color[0] == -1 & color[1] == -1 & color[2] == -1) return color;
         }
         else{
             // calculates some of the many rays reflected by the Opaque surface
             Point sample;
             double[] tempColor = new double[]{0,0,0};
+            int noLightCount = 0;
             
             for (int sampleCount = 0; sampleCount < SAMPLE_SIZE; sampleCount++){
                 sample = opaqueReflectionPoint(pOrigin, seg[0], seg[1]);
                 tempColor = calculatePixel(intersectionPoint, Intersector.normalize(sample.subtract(intersectionPoint)), ++pDepthCount);
+
+                if (tempColor[0] == -1 & tempColor[1] == -1 & tempColor[2] == -1) {
+                    noLightCount++;
+                    continue;
+                }
+
                 color[0] += tempColor[0];
                 color[1] += tempColor[1];
                 color[2] += tempColor[2];
             }
+
+            if (noLightCount == SAMPLE_SIZE) return tempColor;
             color[0] = (color[0] / SAMPLE_SIZE);
             color[1] = (color[1] / SAMPLE_SIZE);
             color[2] = (color[2] / SAMPLE_SIZE);
@@ -208,7 +228,10 @@ public class Tracer implements IConstants{
             color[0] = color[0] / sourceAmount;
             color[1] = color[1] / sourceAmount;
             color[2] = color[2] / sourceAmount;
+        } else{
+            return (new double[] {-1,-1,-1});
         }
+
          //System.out.println(color[0] + ", " + color[1] + ", " + color[2]);
         return color;
     }
