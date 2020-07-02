@@ -60,9 +60,9 @@ public class Tracer implements IConstants{
 
             if (iluminated){
                 // averages the color values received using the amount of samples taken
-                pixColor[0] =  (pixColor[0] / SAMPLE_SIZE)%255;
-                pixColor[1] =  (pixColor[1] / SAMPLE_SIZE)%255;
-                pixColor[2] =  (pixColor[2] / SAMPLE_SIZE)%255;
+                pixColor[0] =  (pixColor[0] / SAMPLE_SIZE);
+                pixColor[1] =  (pixColor[1] / SAMPLE_SIZE);
+                pixColor[2] =  (pixColor[2] / SAMPLE_SIZE);
 
                 // updates color por the pixel
                 try{
@@ -144,9 +144,9 @@ public class Tracer implements IConstants{
             color[1] = (color[1] / SAMPLE_SIZE);
             color[2] = (color[2] / SAMPLE_SIZE);
         }
-        color[0] = intensity * (color[0]) + (double)emittance[0];
-        color[1] = intensity * (color[1]) + (double)emittance[1];
-        color[2] = intensity * (color[2]) + (double)emittance[2];
+        color[0] = ((intensity * color[0]) + (double)emittance[0])/2;
+        color[1] = ((intensity * color[1]) + (double)emittance[1])/2;
+        color[2] = ((intensity * color[2]) + (double)emittance[2])/2;
        //System.out.println(color[0] + ", " + color[1] + ", " + color[2]);
 
         return color;
@@ -217,9 +217,9 @@ public class Tracer implements IConstants{
                 intensity = Math.pow(intensity, 2);
 
                 //Calculate color
-                color[0] += intensity * ((double)LIGHT_R) + (double)emittance[0];
-                color[1] += intensity * ((double)LIGHT_G) + (double)emittance[1];
-                color[2] += intensity * ((double)LIGHT_B) + (double)emittance[2];
+                color[0] += ((intensity * (double)LIGHT_R) + (double)emittance[0])/2;
+                color[1] += ((intensity * (double)LIGHT_G) + (double)emittance[1])/2;
+                color[2] += ((intensity * (double)LIGHT_B) + (double)emittance[2])/2;
             }
         }
 
