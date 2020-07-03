@@ -3,7 +3,7 @@ package model;
 public class Intersector {
     public Intersector(){}
 
-    public static double intersection2(Point origin, Point direction, Point point1, Point point2){
+    public static double intersection(Point origin, Point direction, Point point1, Point point2){
         Point v1 = origin.subtract(point1);
         Point v2 = point2.subtract(point1);
         Point v3 = new Point(-(direction.getY()), direction.getX());
@@ -17,7 +17,7 @@ public class Intersector {
 
         return -1;
     }
-    public static double intersection(Point origin, Point direction, Point point1, Point point2){
+    public static double intersection2(Point origin, Point direction, Point point1, Point point2){
         int x1 = (int)point1.getX();
         int y1 = (int)point1.getY();
         int x2 = (int)point2.getX();
@@ -29,7 +29,7 @@ public class Intersector {
         int y4 = y3 + (int)direction.getY();
     
         double den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-        if (den == 0) {
+        if (den < 0.000001) {
           return -1;
         }
     
