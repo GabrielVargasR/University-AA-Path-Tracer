@@ -60,9 +60,9 @@ public class Renderer implements IConstants {
                 directColor[2] += originalRGB[0] * intensity ;//* ((double)LIGHT_B/255);
             } 
         }
-        directColor[0] /= SOURCES;
-        directColor[1] /= SOURCES;
-        directColor[2] /= SOURCES;
+        directColor[0] /= sources.size();
+        directColor[1] /= sources.size();
+        directColor[2] /= sources.size();
         //IndirectLigh
         color[0] += directColor[0];
         color[1] += directColor[0];
