@@ -80,6 +80,7 @@ public class Tracer implements IConstants{
         }
     }
 
+
     private double[] calculatePixel(Point pOrigin, Point pDirection, int pDepthCount){
         if (pDepthCount > TRACE_DEPTH){
             return castToSource(pOrigin);
@@ -102,10 +103,10 @@ public class Tracer implements IConstants{
 
         // if it does not intersect anything
         if (seg == null){
-            if(pOrigin.getY() !=500){
-                System.out.println("Origin: "+pOrigin.toString()+" Direction: "+pDirection);
+            // if(pOrigin.getY() !=500){
+            //    // System.out.println("Origin: "+pOrigin.toString()+" Direction: "+pDirection);
                 
-            }
+            // }
             
             return new double[]{0,0,0};
         }
@@ -113,8 +114,6 @@ public class Tracer implements IConstants{
         // gets intersection point as well as the emittance and specularity of the surface where the ray bounces
         Point intersectionPoint = Intersector.intersectionPoint(pOrigin, pDirection, intersectionDistance);
 
-        // check if intersection is inside of the frame
-        if (!isInside(intersectionPoint)) return new double[]{0,0,0};
 
         int[] emittance = box.getRGB((int)pOrigin.getX(), (int)pOrigin.getY());
         double intensity = 1 - (intersectionDistance/(double)IMAGE_SIZE);
