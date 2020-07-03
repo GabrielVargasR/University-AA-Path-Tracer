@@ -20,8 +20,8 @@ public class PTRenderedImage extends JPanel implements IConstants{
 		this.graphics = (Graphics2D) bufferedImage.getGraphics();
 		this.graphics.setPaint(BLACK);
 		this.graphics.fillRect(0,0,bufferedImage.getWidth(),bufferedImage.getHeight());
-		Tracer.getInstance().setImage(this.bufferedImage);
-		PathTracer.getInstance().setImage(this.bufferedImage);
+		Renderer.getInstance().setImage(this.bufferedImage);
+		//PathTracer.getInstance().setImage(this.bufferedImage);
 		this.graphics.drawImage(bufferedImage, 0, 0, IMAGE_SIZE, IMAGE_SIZE, null);
 	}
 

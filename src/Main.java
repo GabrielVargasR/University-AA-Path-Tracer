@@ -8,8 +8,9 @@ public class Main {
     private ScheduledExecutorService painter;
     private Executor renderer;
     private MainFrame frame;
-    private Tracer tracer;
-    private PathTracer pt;
+   // private Tracer tracer;
+    //private PathTracer pt;
+    private Renderer tracer;
     private Runnable paintImage;
     private Runnable renderImage;
 
@@ -18,8 +19,9 @@ public class Main {
         this.renderer = Executors.newSingleThreadExecutor();
         this.frame = new MainFrame();
         // this.pathTracer = PathTracer.getInstance();
-        this.tracer = Tracer.getInstance();
-        this.pt = PathTracer.getInstance();
+        //this.tracer = Tracer.getInstance();
+        //this.pt = PathTracer.getInstance();
+        tracer = Renderer.getInstance();
         this.createRunnables();
     }
 
@@ -40,7 +42,7 @@ public class Main {
             @Override
             public void run() {
                 try{
-                     tracer.tracePath();
+                     tracer.render();
                     //pt.tracePath();
                 } catch (StackOverflowError e){
                     e.printStackTrace();
