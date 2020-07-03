@@ -48,7 +48,9 @@ public class Renderer implements IConstants {
             boolean free = true;
             for (Point[] segment : segments){
                 distance = Intersector.intersection(pOrigin, Intersector.normalize(dirToSource), segment[0], segment[1]);
+                //System.out.println(distance);
                 if (distance != -1 && distance < length) {
+                    //System.out.println(pOrigin);
                     // Point interPoint = Intersector.intersectionPoint(pOrigin, Intersector.normalize(dirToSource), distance);
                     // System.out.println(interPoint);
                     // Graphics g = canvasImage.getGraphics();
@@ -77,8 +79,8 @@ public class Renderer implements IConstants {
         directColor[2] /= sources.size();
         //IndirectLigh
         color[0] += directColor[0];
-        color[1] += directColor[0];
-        color[2] += directColor[0];
+        color[1] += directColor[1];
+        color[2] += directColor[2];
         return color;
 
     }
