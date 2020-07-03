@@ -3,7 +3,7 @@ package model;
 public class Intersector {
     public Intersector(){}
 
-    public static int intersection(Point origin, Point direction, Point point1, Point point2){
+    public static double intersection(Point origin, Point direction, Point point1, Point point2){
         Point v1 = origin.subtract(point1);
         Point v2 = point2.subtract(point1);
         Point v3 = new Point(-(direction.getY()), direction.getX());
@@ -11,10 +11,9 @@ public class Intersector {
         int dotProd = v2.dot(v3);
         if (Math.abs(dotProd) < 0.000001) return -1;
 
-        int t1 = v2.cross(v1) / dotProd;
-        int t2 = v1.dot(v3) / dotProd;
-
-        if (t1 >= 0 & (t2 >= 0 & t2 <= 1)) return t1;
+        double t1 = (double)v2.cross(v1) / (double)dotProd;
+        double t2 = (double)v1.dot(v3) / (double)dotProd;
+        if (t1 >= 0 && (t2 >= 0 && t2 <= 1)) return t1;
 
         return -1;
     }
@@ -48,6 +47,21 @@ public class Intersector {
         // pNormal must be normalized
         Point p = pNormal.multiply((2 * pIncoming.dot(pNormal)));
         return pIncoming.subtract(p);
+  
+    }
+    public static void main(String[] args) {
+        Point origin = new Point(230,0);
+        Point dir = new Point(-1,0);
+        Box b = new Box();
+        Double distance = 999.0;
+        Point a;
+        for (Point[] segment : b.getSegments()) {
+            
+             distance = intersection(origin, dir, segment[0], segment[1]);
+             a = intersectionPoint(origin, dir, distance);
+             System.out.println("Origin: "+origin.toString()+" Direction: "+dir+"  Seg[0]"+segment[0]+" Seg[1]"+segment[1]+" Distance"+distance);
+             //System.out.println(a+","+distance);
+        }
     }
 
     // method was added from Tracer for testing purposes

@@ -8,7 +8,6 @@ public class Main {
     private ScheduledExecutorService painter;
     private Executor renderer;
     private MainFrame frame;
-    // private PathTracer pathTracer;
     private Tracer tracer;
     private PathTracer pt;
     private Runnable paintImage;
@@ -41,8 +40,8 @@ public class Main {
             @Override
             public void run() {
                 try{
-                    // tracer.tracePath();
-                    pt.tracePath();
+                     tracer.tracePath();
+                    //pt.tracePath();
                 } catch (StackOverflowError e){
                     e.printStackTrace();
                 }

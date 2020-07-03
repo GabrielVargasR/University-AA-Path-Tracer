@@ -75,7 +75,6 @@ public class Box implements IConstants{
     private void createSources(){
         sources.add(new Point(250, 0));
         sources.add(new Point(305, 201));
-        sources.add(new Point(50,300));
     }
 
     private void initScene(){
