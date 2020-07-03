@@ -1,4 +1,5 @@
 import model.*;
+import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Random;
@@ -25,7 +26,8 @@ public class Renderer implements IConstants {
         Point point;
         double[] pixelRGB;
 
-        while (true) {
+        //for (int i = 0; i < 10; i++) {
+        while(true) {
             point = getRandomPoint();
             pixelRGB = castRays(point,0);
             //divideColorBy(pixelRGB, TRACE_DEPTH);
@@ -37,6 +39,7 @@ public class Renderer implements IConstants {
         double[] directColor = new double[3];
         double[] indirectColor = new double[3];
         double[] color = new double[3];
+        //double sourcesHit = 1; se deberia poner para no dividir siempre por el size
         //DirectLigh
         for (Point source : sources) {
             double distance = 0;
@@ -46,6 +49,12 @@ public class Renderer implements IConstants {
             for (Point[] segment : segments){
                 distance = Intersector.intersection(pOrigin, Intersector.normalize(dirToSource), segment[0], segment[1]);
                 if (distance != -1 && distance < length) {
+                    // Point interPoint = Intersector.intersectionPoint(pOrigin, Intersector.normalize(dirToSource), distance);
+                    // System.out.println(interPoint);
+                    // Graphics g = canvasImage.getGraphics();
+                    // g.setColor(Color.RED);
+                    // g.drawLine((int)pOrigin.getX(), (int)pOrigin.getY(), (int)interPoint.getX(), (int)interPoint.getY());
+                    // canvasImage.setRGB((int)pOrigin.getX(), (int)pOrigin.getY(), Color.white.getRGB());
                     free = false;
                     break;
                 }
@@ -53,6 +62,9 @@ public class Renderer implements IConstants {
             if(free){
                 //double intensity = getIntensity(length);
                 double intensity = 1;
+                // Graphics g = canvasImage.getGraphics();
+                // g.setColor(Color.yellow);
+                // g.drawLine((int)pOrigin.getX(), (int)pOrigin.getY(), (int)source.getX(), (int)source.getY());
                 int[] originalRGB = box.getRGB((int)pOrigin.getX(), (int)pOrigin.getY());
 
                 directColor[0] += originalRGB[0] * intensity;// * ((double)LIGHT_R/255);
