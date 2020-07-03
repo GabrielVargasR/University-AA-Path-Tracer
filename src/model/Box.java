@@ -42,7 +42,7 @@ public class Box implements IConstants{
         // First two points are the points for the segment
         // Third point is the direction of the normal line
 
-        Point[] frameL = new Point[]{new Point(0,0), new Point(500,0), new Point(1,0)};
+        Point[] frameL = new Point[]{new Point(0,0), new Point(0,500), new Point(1,0)};
         Point[] frameR = new Point[]{new Point(500,0), new Point(500,500), new Point(-1,0)};
         Point[] frameT = new Point[]{new Point(0,0), new Point(500,0), new Point(0,-1)};
         Point[] frameB = new Point[]{new Point(0,500), new Point(500,500), new Point(0,1)};
