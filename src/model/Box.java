@@ -119,7 +119,7 @@ public class Box implements IConstants{
         }
 
         // sources
-        this.scene.get(250).replace(0, new int[]{LIGHT_R, LIGHT_G, LIGHT_B, SPECULAR});
+        this.scene.get(250).replace(1, new int[]{LIGHT_R, LIGHT_G, LIGHT_B, SPECULAR});
         this.scene.get(305).replace(201, new int[]{LIGHT_R, LIGHT_G, LIGHT_B, SPECULAR});
     }
 
