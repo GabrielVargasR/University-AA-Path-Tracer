@@ -70,8 +70,8 @@ public class Renderer implements IConstants {
                 int[] originalRGB = box.getRGB((int)pOrigin.getX(), (int)pOrigin.getY());
 
                 directColor[0] += originalRGB[0] * intensity;// * ((double)LIGHT_R/255);
-                directColor[1] += originalRGB[0] * intensity;// * ((double)LIGHT_G/255);
-                directColor[2] += originalRGB[0] * intensity ;//* ((double)LIGHT_B/255);
+                directColor[1] += originalRGB[1] * intensity;// * ((double)LIGHT_G/255);
+                directColor[2] += originalRGB[2] * intensity ;//* ((double)LIGHT_B/255);
             } 
         }
         directColor[0] /= sources.size();
