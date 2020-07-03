@@ -13,7 +13,7 @@ public class Intersector {
 
         double t1 = (double)v2.cross(v1) / (double)dotProd;
         double t2 = (double)v1.dot(v3) / (double)dotProd;
-        if (t1 >= 0 && (t2 >= 0 && t2 <= 1)) return t1;
+        if (t1 >= 0.0 && (t2 >= 0.0 && t2 <= 1.0)) return t1;
 
         return -1;
     }
@@ -35,7 +35,7 @@ public class Intersector {
     
         double t = (double)((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / (double)den;
         double u = -(double)((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / (double)den;
-        if (t > 0 && t < 1 && u > 0) {
+        if (t > 0.0 && t < 1.0 && u > 0.0) {
           return u;
         } 
         else {
