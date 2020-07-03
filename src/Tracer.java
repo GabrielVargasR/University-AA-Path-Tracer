@@ -84,7 +84,7 @@ public class Tracer implements IConstants{
             return castToSource(pOrigin);
         }
 
-        double intersectionDistance = Integer.MAX_VALUE;
+        double intersectionDistance = Double.MAX_VALUE;
         double temp;
         Point[] seg = null;
         model.Point normal = null;
@@ -92,7 +92,7 @@ public class Tracer implements IConstants{
         // gets the closest object in the path of the ray
         for (Point[] segment : segments){
             temp = Intersector.intersection(pOrigin, pDirection, segment[0], segment[1]);
-            if (temp > 0 & temp < intersectionDistance) {
+            if (temp >= 0 & temp < intersectionDistance) {
                 seg = segment;
                 intersectionDistance = temp;
                 normal = segment[2];

@@ -47,5 +47,20 @@ public class Intersector {
         // pNormal must be normalized
         Point p = pNormal.multiply((2 * pIncoming.dot(pNormal)));
         return pIncoming.subtract(p);
+  
+    }
+    public static void main(String[] args) {
+        Point origin = new Point(230,0);
+        Point dir = new Point(-1,0);
+        Box b = new Box();
+        Double distance = 999.0;
+        Point a;
+        for (Point[] segment : b.getSegments()) {
+            
+             distance = intersection(origin, dir, segment[0], segment[1]);
+             a = intersectionPoint(origin, dir, distance);
+             System.out.println("Origin: "+origin.toString()+" Direction: "+dir+"  Seg[0]"+segment[0]+" Seg[1]"+segment[1]+" Distance"+distance);
+             //System.out.println(a+","+distance);
+        }
     }
 }
