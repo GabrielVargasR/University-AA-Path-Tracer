@@ -30,8 +30,8 @@ public class Point {
     }
 
     public Point divide(double pScalar){
-        double newX = (double) Math.round(this.x/pScalar);
-        double newY = (double) Math.round(this.y/pScalar);
+        double newX = this.x/pScalar;
+        double newY = this.y/pScalar;
         return (new Point(newX, newY));
     }
 
