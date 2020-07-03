@@ -51,13 +51,13 @@ public class Renderer implements IConstants {
                 }
             }
             if(free){
-                double intensity = getIntensity(length);
-                //double intensity = 1;
+                //double intensity = getIntensity(length);
+                double intensity = 1;
                 int[] originalRGB = box.getRGB((int)pOrigin.getX(), (int)pOrigin.getY());
 
-                directColor[0] += originalRGB[0] * intensity * ((double)LIGHT_R/255);
-                directColor[1] += originalRGB[0] * intensity * ((double)LIGHT_G/255);
-                directColor[2] += originalRGB[0] * intensity * ((double)LIGHT_B/255);
+                directColor[0] += originalRGB[0] * intensity;// * ((double)LIGHT_R/255);
+                directColor[1] += originalRGB[0] * intensity;// * ((double)LIGHT_G/255);
+                directColor[2] += originalRGB[0] * intensity ;//* ((double)LIGHT_B/255);
             } 
         }
         directColor[0] /= SOURCES;
@@ -94,5 +94,8 @@ public class Renderer implements IConstants {
         segments = box.getSegments();
         sources = box.getSources();
     }
-
+    public static void main(String[] args) {
+        Main m = new Main();
+        m.trace();
+    }
 }
