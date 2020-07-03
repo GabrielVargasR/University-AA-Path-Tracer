@@ -100,7 +100,14 @@ public class Tracer implements IConstants{
         }
 
         // if it does not intersect anything
-        if (seg == null) return new double[]{0,0,0};
+        if (seg == null){
+            if(pOrigin.getY() !=500){
+                System.out.println("Origin: "+pOrigin.toString()+" Direction: "+pDirection);
+                
+            }
+            
+            return new double[]{0,0,0};
+        }
 
         // gets intersection point as well as the emittance and specularity of the surface where the ray bounces
         Point intersectionPoint = Intersector.intersectionPoint(pOrigin, pDirection, intersectionDistance);
