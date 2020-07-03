@@ -1,19 +1,19 @@
 package model;
 
 public class Point {
-    private int x;
-    private int y;
+    private double x;
+    private double y;
 
-    public Point(int pX, int pY){
+    public Point(double pX, double pY){
         this.x = pX;
         this.y = pY;
     }
 
-    public int getX(){
+    public double getX(){
         return this.x;
     }
 
-    public int getY(){
+    public double getY(){
         return this.y;
     }
 
@@ -25,21 +25,21 @@ public class Point {
         return (new Point(this.x-pOther.getX(), this.y-pOther.getY()));
     }
 
-    public Point multiply(int pScalar){
+    public Point multiply(double pScalar){
         return (new Point(this.x*pScalar, this.y*pScalar));
     }
 
     public Point divide(double pScalar){
-        int newX = (int) Math.round(this.x/pScalar);
-        int newY = (int) Math.round(this.y/pScalar);
+        double newX = (double) Math.round(this.x/pScalar);
+        double newY = (double) Math.round(this.y/pScalar);
         return (new Point(newX, newY));
     }
 
-    public int dot(Point pOther){
+    public double dot(Point pOther){
         return (this.x*pOther.getX())+(this.y*pOther.getY());
     }
 
-    public int cross(Point pOther){
+    public double cross(Point pOther){
         return (this.x*pOther.getY())-(this.y*pOther.getX());
     }
 

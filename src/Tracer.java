@@ -46,7 +46,7 @@ public class Tracer implements IConstants{
                 dirPoint = new model.Point(random.nextInt(IMAGE_SIZE), random.nextInt(IMAGE_SIZE));
                 direction = Intersector.normalize(dirPoint.subtract(point)); // normalized for accuracy and simplifying calculations
                 calculatedColor = calculatePixel(point, direction, 0);
-
+                
                 if (calculatedColor[0] == -1 & calculatedColor[1] == -1 & calculatedColor[2] == -1) {
                     continue;
                 } else {
@@ -55,9 +55,10 @@ public class Tracer implements IConstants{
                     pixColor[0] += calculatedColor[0]/TRACE_DEPTH;
                     pixColor[1] += calculatedColor[1]/TRACE_DEPTH;
                     pixColor[2] += calculatedColor[2]/TRACE_DEPTH;
-                }   
+                }
             }
 
+            
             if (iluminated){
                 // averages the color values received using the amount of samples taken
                 pixColor[0] =  (pixColor[0] / SAMPLE_SIZE);
@@ -67,14 +68,14 @@ public class Tracer implements IConstants{
                 // updates color por the pixel
                 try{
                     // System.out.println(pixColor[0] + ", " + pixColor[1] + ", " + pixColor[2]);
-                    canvasImage.setRGB(point.getX(), point.getY(), (new Color((int)pixColor[0], (int)pixColor[1], (int)pixColor[2]).getRGB()));
+                    canvasImage.setRGB((int)point.getX(), (int)point.getY(), (new Color((int)pixColor[0], (int)pixColor[1], (int)pixColor[2]).getRGB()));
                 } 
                 catch(Exception e){
                     System.out.println("Error color mas de 255");
                     System.out.println(pixColor[0] + ", " + pixColor[1] + ", " + pixColor[2]);
                 }
             } else{
-                canvasImage.setRGB(point.getX(), point.getY(), Color.BLACK.getRGB());
+                canvasImage.setRGB((int)point.getX(), (int)point.getY(), Color.BLACK.getRGB());
             }
         }
     }
@@ -115,10 +116,10 @@ public class Tracer implements IConstants{
         // check if intersection is inside of the frame
         if (!isInside(intersectionPoint)) return new double[]{0,0,0};
 
-        int[] emittance = box.getRGB(pOrigin.getX(), pOrigin.getY());
+        int[] emittance = box.getRGB((int)pOrigin.getX(), (int)pOrigin.getY());
         double intensity = 1 - (intersectionDistance/(double)IMAGE_SIZE);
         intensity = Math.pow(intensity, 2);
-        int specularity = box.getSpecularity(intersectionPoint.getX(), intersectionPoint.getY());
+        int specularity = box.getSpecularity((int)intersectionPoint.getX(), (int)intersectionPoint.getY());
 
         double[] color = new double[]{0,0,0};
         // reflection changes depending on surface type
@@ -172,19 +173,19 @@ public class Tracer implements IConstants{
         }
 
         if (horizontal){
-            int y = (pSeg1.getY() != 0) ? pSeg1.getY() : 1;
+            int y = ((int)pSeg1.getY() != 0) ? (int)pSeg1.getY() : 1;
             if (before){
-                int adjust = IMAGE_SIZE - pSeg1.getY();
+                int adjust = IMAGE_SIZE - (int)pSeg1.getY();
                 return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(++y)+adjust));
             } else{
                 return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(y)));
             }
         } else{
             if (before){
-                return (new Point(random.nextInt(pSeg1.getX()+1), random.nextInt(IMAGE_SIZE)));
+                return (new Point(random.nextInt((int)pSeg1.getX()+1), random.nextInt(IMAGE_SIZE)));
             } else{
-                int adjust = IMAGE_SIZE - pSeg1.getX();
-                return (new Point(random.nextInt(pSeg1.getX()+1)+adjust, random.nextInt(IMAGE_SIZE)));
+                int adjust = IMAGE_SIZE - (int)pSeg1.getX();
+                return (new Point(random.nextInt((int)pSeg1.getX()+1)+adjust, random.nextInt(IMAGE_SIZE)));
             }
         }
     }
@@ -197,7 +198,7 @@ public class Tracer implements IConstants{
         // returns color reflected by the point due to the light shining on it
 
         double[] color = new double[]{0,0,0};
-        int[] emittance = box.getRGB(pPoint.getX(), pPoint.getY());
+        int[] emittance = box.getRGB((int)pPoint.getX(), (int)pPoint.getY());
         Point direction;
         double distance;
         double intensity;

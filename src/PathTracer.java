@@ -65,7 +65,7 @@ public class PathTracer implements IConstants{
                 if (free){
                     // intensity = Math.pow((1-(length / IMAGE_SIZE)), 2);
                     intensity = 1-(length / IMAGE_SIZE);
-                    pixValue = box.getRGB(point.getX(), point.getY());
+                    pixValue = box.getRGB((int)point.getX(), (int)point.getY());
                     pixValue = updateColor(pixValue, intensity);
 
                     pixColor[0] += pixValue[0];
@@ -74,7 +74,7 @@ public class PathTracer implements IConstants{
                 }
 
                 // box.updateSceneAt(point.getX(), point.getY(), pixColor);
-                updateImage(point.getX(), point.getY(), pixColor);
+                updateImage((int)point.getX(), (int)point.getY(), pixColor);
                 // canvasImage.setRGB(point.getX(), point.getY(), (new Color(pixColor[0]/SOURCES, pixColor[2]/SOURCES, pixColor[2]/SOURCES).getRGB()));
             }
         }

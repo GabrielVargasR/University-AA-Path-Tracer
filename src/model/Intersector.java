@@ -8,7 +8,7 @@ public class Intersector {
         Point v2 = point2.subtract(point1);
         Point v3 = new Point(-(direction.getY()), direction.getX());
 
-        int dotProd = v2.dot(v3);
+        double dotProd = v2.dot(v3);
         if (Math.abs(dotProd) < 0.000001) return -1;
 
         double t1 = (double)v2.cross(v1) / (double)dotProd;
@@ -18,15 +18,15 @@ public class Intersector {
         return -1;
     }
     public static double intersection(Point origin, Point direction, Point point1, Point point2){
-        int x1 = point1.getX();
-        int y1 = point1.getY();
-        int x2 = point2.getX();
-        int y2 = point2.getY();
+        int x1 = (int)point1.getX();
+        int y1 = (int)point1.getY();
+        int x2 = (int)point2.getX();
+        int y2 = (int)point2.getY();
     
-        int x3 = origin.getX();
-        int y3 =origin.getY();
-        int x4 = x3 + direction.getX();
-        int y4 = y3 + direction.getY();
+        int x3 = (int)origin.getX();
+        int y3 = (int)origin.getY();
+        int x4 = x3 + (int)direction.getX();
+        int y4 = y3 + (int)direction.getY();
     
         double den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
         if (den == 0) {
@@ -45,8 +45,8 @@ public class Intersector {
 
 
     public static Point intersectionPoint(Point pOrigin, Point pDirection, double pDistance){
-        int x = pOrigin.getX() + (int)(pDirection.getX()*pDistance);
-        int y = pOrigin.getY() + (int)(pDirection.getY()*pDistance);
+        int x = (int)pOrigin.getX() + (int)((int)pDirection.getX()*pDistance);
+        int y = (int)pOrigin.getY() + (int)((int)pDirection.getY()*pDistance);
         return (new Point(x,y));
     }
 
@@ -93,17 +93,17 @@ public class Intersector {
 
         if (horizontal){
             if (before){
-                int adjust = 10 - pSeg1.getY();
-                return (new Point(random.nextInt(10), random.nextInt(pSeg1.getY())+adjust));
+                int adjust = 10 - (int)pSeg1.getY();
+                return (new Point(random.nextInt(10), random.nextInt((int)pSeg1.getY())+adjust));
             } else{
-                return (new Point(random.nextInt(10), random.nextInt(pSeg1.getY())));
+                return (new Point(random.nextInt(10), random.nextInt((int)pSeg1.getY())));
             }
         } else{
             if (before){
-                return (new Point(random.nextInt(pSeg1.getX()), random.nextInt(10)));
+                return (new Point(random.nextInt((int)pSeg1.getX()), random.nextInt(10)));
             } else{
-                int adjust = 10 - pSeg1.getX();
-                return (new Point(random.nextInt(pSeg1.getX())+adjust, random.nextInt(10)));
+                int adjust = 10 - (int)pSeg1.getX();
+                return (new Point(random.nextInt((int)pSeg1.getX())+adjust, random.nextInt(10)));
             }
         }
      }
