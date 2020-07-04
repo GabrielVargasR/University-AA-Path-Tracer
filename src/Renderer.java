@@ -39,7 +39,7 @@ public class Renderer implements IConstants {
         double[] directColor = new double[3];
         double[] indirectColor = new double[3];
         double[] color = new double[3];
-        //double sourcesHit = 1; se deberia poner para no dividir siempre por el size
+        int sourcesHit = 0;
         //DirectLigh
         for (Point source : sources) {
             double distance = 0;
@@ -56,15 +56,18 @@ public class Renderer implements IConstants {
             if(free){
                 double intensity = getIntensity(length);
                 int[] originalRGB = box.getRGB((int)pOrigin.getX(), (int)pOrigin.getY());
-
                 directColor[0] += originalRGB[0] * intensity * ((double)LIGHT_R/255);
                 directColor[1] += originalRGB[1] * intensity * ((double)LIGHT_G/255);
                 directColor[2] += originalRGB[2] * intensity * ((double)LIGHT_B/255);
+                sourcesHit++;
             } 
         }
-        directColor[0] /= sources.size();
-        directColor[1] /= sources.size();
-        directColor[2] /= sources.size();
+        if(sourcesHit == 0){
+            sourcesHit++;
+        }
+        directColor[0] /= sourcesHit;
+        directColor[1] /= sourcesHit;
+        directColor[2] /= sourcesHit;
         //IndirectLigh
         color[0] += directColor[0];
         color[1] += directColor[1];
