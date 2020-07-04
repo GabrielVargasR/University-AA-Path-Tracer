@@ -178,7 +178,7 @@ public class Renderer implements IConstants {
             int y = ((int)pSeg1.getY() != 0) ? (int)pSeg1.getY() : 1;
             if (before){
                 int adjust = IMAGE_SIZE - (int)pSeg1.getY();
-                return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(++y)+adjust));
+                return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(adjust)+y+1));
             } else{
                 return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(y)));
             }
@@ -187,7 +187,7 @@ public class Renderer implements IConstants {
                 return (new Point(random.nextInt((int)pSeg1.getX()+1), random.nextInt(IMAGE_SIZE)));
             } else{
                 int adjust = IMAGE_SIZE - (int)pSeg1.getX();
-                return (new Point(random.nextInt((int)pSeg1.getX()+1)+adjust, random.nextInt(IMAGE_SIZE)));
+                return (new Point(random.nextInt(adjust)+(int)pSeg1.getX()+1, random.nextInt(IMAGE_SIZE)));
             }
         }
     }
