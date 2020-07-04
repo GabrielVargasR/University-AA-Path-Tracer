@@ -27,10 +27,10 @@ public class Renderer implements IConstants {
         Point point;
         double[] pixelRGB;
 
-        for (int i = 0; i < 1; i++) {
-        //while (true) {
-            //point = getRandomPoint();
-            point = new Point(390,250);
+        //for (int i = 0; i < 1; i++) {
+        while (true) {
+            point = getRandomPoint();
+            //point = new Point(390,250);
             pixelRGB = castRays(point, null, null, 0);
             // divideColorBy(pixelRGB, TRACE_DEPTH);
             Color pixelColor = new Color((int) pixelRGB[0], (int) pixelRGB[1], (int) pixelRGB[2]);
@@ -73,8 +73,8 @@ public class Renderer implements IConstants {
             } 
             else {
                 Point dirPoint;
-                Graphics g = canvasImage.getGraphics();
-                g.setColor(Color.BLUE);
+                // Graphics g = canvasImage.getGraphics();
+                // g.setColor(Color.BLUE);
                 for (int i = 0; i < SAMPLE_SIZE; i++) {
                     if(pSegment == null){
                         dirPoint = getRandomPoint();
@@ -85,7 +85,7 @@ public class Renderer implements IConstants {
                     direction = Intersector.normalize(dirPoint.subtract(pOrigin));
                     intersectionDistance = getClosestIntersection(pOrigin, direction, segmentContainer);
                     if (intersectionDistance == Double.MAX_VALUE) {
-                        System.out.println("Siguen exitiendo nulos");
+                        //System.out.println("Siguen exitiendo nulos");
                         continue;
                     }
                     intersectionPoint = Intersector.intersectionPoint(pOrigin, direction, intersectionDistance);
@@ -94,7 +94,7 @@ public class Renderer implements IConstants {
                     intensity = getIntensity(length);
 
 
-                    g.drawLine(((int)pOrigin.getX()), ((int)pOrigin.getY()), ((int)intersectionPoint.getX()), ((int)intersectionPoint.getY()));
+                   // g.drawLine(((int)pOrigin.getX()), ((int)pOrigin.getY()), ((int)intersectionPoint.getX()), ((int)intersectionPoint.getY()));
 
                     sampleColor = castRays(intersectionPoint,pOrigin,segmentContainer, ++pDepthCount);
 
@@ -105,7 +105,7 @@ public class Renderer implements IConstants {
                 }
                 divideColorBy(indirectColor, SAMPLE_SIZE);
             }
-            System.out.println("R: "+indirectColor[0]+" G: "+indirectColor[1]+" B: "+indirectColor[2]);
+           // System.out.println("R: "+indirectColor[0]+" G: "+indirectColor[1]+" B: "+indirectColor[2]);
             color[0] = (directColor[0] + indirectColor[0]) / 2;
             color[1] = (directColor[1] + indirectColor[1]) / 2;
             color[2] = (directColor[2] + indirectColor[2]) / 2;
