@@ -38,7 +38,7 @@ public class Renderer implements IConstants {
         }
     }
 
-    private double[] castRays(Point pOrigin, Point pOriginNormal, Point pIncomingLightDir, int pDepthCount) {
+    private double[] castRays(Point pOrigin, Point pIncomingSource,Point[] pSegment, int pDepthCount) {
         double[] color = new double[3];
         if (pDepthCount <= TRACE_DEPTH) {
             double[] directColor = calculateDirectLight(pOrigin);
@@ -47,16 +47,17 @@ public class Renderer implements IConstants {
             double intersectionDistance;
             double intensity;
             double length;
-            Point normal = new Point(-1, -1);
+            Point[] segmentContainer = new Point[3];
             Point intersectionPoint;
             Point direction;
             Point dirToIntersection;
             int specularity = box.getSpecularity((int) pOrigin.getX(), (int) pOrigin.getY());
-            if ((specularity == SPECULAR) && (pOriginNormal != null)) {
-                direction = Intersector.reflect(pIncomingLightDir, pOriginNormal);
-                intersectionDistance = getClosestIntersection(pOrigin, direction, normal);
+            if ((specularity == SPECULAR) && (pSegment != null)) {
+                Point incomingLightDir = Intersector.normalize(pOrigin.subtract(pIncomingSource));
+                direction = Intersector.reflect(incomingLightDir, pSegment[2]);
+                intersectionDistance = getClosestIntersection(pOrigin, direction, segmentContainer);
                 if (intersectionDistance == Double.MAX_VALUE) {
-                    System.out.println("Nulo en especular");
+                   // System.out.println("Nulo en especular");
                     indirectColor = color;
                 } 
                 else {
@@ -64,7 +65,7 @@ public class Renderer implements IConstants {
                     dirToIntersection = intersectionPoint.subtract(pOrigin);
                     length = Intersector.length(dirToIntersection);
                     intensity = getIntensity(length);
-                    sampleColor = castRays(intersectionPoint, normal, direction, ++pDepthCount);
+                    sampleColor = castRays(intersectionPoint, pOrigin,segmentContainer,++pDepthCount);
                     multiplyColorBy(sampleColor, intensity);
                     indirectColor = sampleColor;
                 }
@@ -75,9 +76,14 @@ public class Renderer implements IConstants {
                 // Graphics g = canvasImage.getGraphics();
                 // g.setColor(Color.BLUE);
                 for (int i = 0; i < SAMPLE_SIZE; i++) {
-                    dirPoint = getRandomPoint();
+                    if(pSegment == null){
+                        dirPoint = getRandomPoint();
+                    }
+                    else{
+                        dirPoint = opaqueReflectionPoint(pIncomingSource,pSegment[0],pSegment[1]);
+                    }
                     direction = Intersector.normalize(dirPoint.subtract(pOrigin));
-                    intersectionDistance = getClosestIntersection(pOrigin, direction, normal);
+                    intersectionDistance = getClosestIntersection(pOrigin, direction, segmentContainer);
                     if (intersectionDistance == Double.MAX_VALUE) {
                         System.out.println("Siguen exitiendo nulos");
                         continue;
@@ -90,7 +96,7 @@ public class Renderer implements IConstants {
 
                    // g.drawLine(((int)pOrigin.getX()), ((int)pOrigin.getY()), ((int)intersectionPoint.getX()), ((int)intersectionPoint.getY()));
 
-                    sampleColor = castRays(intersectionPoint, normal, direction, ++pDepthCount);
+                    sampleColor = castRays(intersectionPoint,pOrigin,segmentContainer, ++pDepthCount);
                     multiplyColorBy(sampleColor, intensity);
                     indirectColor[0] += sampleColor[0];
                     indirectColor[1] += sampleColor[1];
@@ -140,18 +146,48 @@ public class Renderer implements IConstants {
         return directColor;
     }
 
-    private double getClosestIntersection(Point pOrigin, Point pDirection, Point pNormal) {
+    private double getClosestIntersection(Point pOrigin, Point pDirection,Point[] pSegment) {
         double tempDistance;
         double intersectionDistance = Double.MAX_VALUE;
         for (Point[] segment : segments) {
             tempDistance = Intersector.intersection(pOrigin, pDirection, segment[0], segment[1]);
             if (tempDistance > 0 & tempDistance < intersectionDistance) {
                 intersectionDistance = tempDistance;
-                pNormal.setX(segment[2].getX());
-                pNormal.setY(segment[2].getY());
+                pSegment[0] = segment[0];
+                pSegment[1] = segment[1];
+                pSegment[2] = segment[2];
             }
         }
         return intersectionDistance;
+    }
+    private Point opaqueReflectionPoint(Point pPoint, Point pSeg1, Point pSeg2){
+        boolean horizontal; // line is horizontal
+        boolean before = false; // point is before or below the segment
+
+        if (pSeg1.getX() == pSeg2.getX()){
+            horizontal = false;
+            if (pPoint.getX() < pSeg1.getX()) before = true;
+        } else { // segment has same y value
+            horizontal = true;
+            if (pPoint.getY() > pSeg1.getY()) before = true;
+        }
+
+        if (horizontal){
+            int y = ((int)pSeg1.getY() != 0) ? (int)pSeg1.getY() : 1;
+            if (before){
+                int adjust = IMAGE_SIZE - (int)pSeg1.getY();
+                return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(++y)+adjust));
+            } else{
+                return (new Point(random.nextInt(IMAGE_SIZE), random.nextInt(y)));
+            }
+        } else{
+            if (before){
+                return (new Point(random.nextInt((int)pSeg1.getX()+1), random.nextInt(IMAGE_SIZE)));
+            } else{
+                int adjust = IMAGE_SIZE - (int)pSeg1.getX();
+                return (new Point(random.nextInt((int)pSeg1.getX()+1)+adjust, random.nextInt(IMAGE_SIZE)));
+            }
+        }
     }
 
     private double getIntensity(double pLenght) {
