@@ -108,18 +108,18 @@ public class Intersector {
         }
      }
     public static void main(String[] args) {
-        Point origin = new Point(230,0);
-        Point dir = new Point(-1,0);
-        Box b = new Box();
-        Double distance = 999.0;
-        Point a;
-        for (Point[] segment : b.getSegments()) {
+        // Point origin = new Point(230,0);
+        // Point dir = new Point(-1,0);
+        // Box b = new Box();
+        // Double distance = 999.0;
+        // Point a;
+        // for (Point[] segment : b.getSegments()) {
             
-             distance = intersection(origin, dir, segment[0], segment[1]);
-             a = intersectionPoint(origin, dir, distance);
-             System.out.println("Origin: "+origin.toString()+" Direction: "+dir+"  Seg[0]"+segment[0]+" Seg[1]"+segment[1]+" Distance"+distance);
-             //System.out.println(a+","+distance);
-        }
+        //      distance = intersection(origin, dir, segment[0], segment[1]);
+        //      a = intersectionPoint(origin, dir, distance);
+        //      System.out.println("Origin: "+origin.toString()+" Direction: "+dir+"  Seg[0]"+segment[0]+" Seg[1]"+segment[1]+" Distance"+distance);
+        //      //System.out.println(a+","+distance);
+        // }
     }
     // public static void main(String[] args) {
     //     Point[] opSegment = new Point[] {new Point(5,1), new Point(5,6), new Point(-1,0)}; // opaque segment

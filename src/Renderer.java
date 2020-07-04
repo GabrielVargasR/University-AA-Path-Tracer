@@ -1,11 +1,7 @@
 import model.*;
-import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Random;
-
-import javax.lang.model.util.ElementScanner14;
-
 import java.util.ArrayList;
 
 public class Renderer implements IConstants {
