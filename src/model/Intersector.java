@@ -18,15 +18,15 @@ public class Intersector {
         return -1;
     }
     public static double intersection2(Point origin, Point direction, Point point1, Point point2){
-        int x1 = (int)point1.getX();
-        int y1 = (int)point1.getY();
-        int x2 = (int)point2.getX();
-        int y2 = (int)point2.getY();
+        double x1 = point1.getX();
+        double y1 = point1.getY();
+        double x2 = point2.getX();
+        double y2 = point2.getY();
     
-        int x3 = (int)origin.getX();
-        int y3 = (int)origin.getY();
-        int x4 = x3 + (int)direction.getX();
-        int y4 = y3 + (int)direction.getY();
+        double x3 = origin.getX();
+        double y3 = origin.getY();
+        double x4 = x3 + direction.getX();
+        double y4 = y3 + direction.getY();
     
         double den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
         if (den < 0.000001) {
@@ -45,8 +45,8 @@ public class Intersector {
 
 
     public static Point intersectionPoint(Point pOrigin, Point pDirection, double pDistance){
-        int x = (int)pOrigin.getX() + (int)((int)pDirection.getX()*pDistance);
-        int y = (int)pOrigin.getY() + (int)((int)pDirection.getY()*pDistance);
+        int x = (int)(pOrigin.getX() + pDirection.getX()*pDistance);
+        int y = (int)(pOrigin.getY() + pDirection.getY()*pDistance);
         return (new Point(x,y));
     }
 
