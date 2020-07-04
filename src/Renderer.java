@@ -1,5 +1,6 @@
 import model.*;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.ArrayList;
@@ -26,9 +27,10 @@ public class Renderer implements IConstants {
         Point point;
         double[] pixelRGB;
 
-        // for (int i = 0; i < 10; i++) {
+        //for (int i = 0; i < 1; i++) {
         while (true) {
             point = getRandomPoint();
+            //point = new Point(390,250);
             pixelRGB = castRays(point, null, null, 0);
             // divideColorBy(pixelRGB, TRACE_DEPTH);
             Color pixelColor = new Color((int) pixelRGB[0], (int) pixelRGB[1], (int) pixelRGB[2]);
@@ -54,7 +56,7 @@ public class Renderer implements IConstants {
                 direction = Intersector.reflect(pIncomingLightDir, pOriginNormal);
                 intersectionDistance = getClosestIntersection(pOrigin, direction, normal);
                 if (intersectionDistance == Double.MAX_VALUE) {
-                    //System.out.println("Nulo en especular");
+                    System.out.println("Nulo en especular");
                     indirectColor = color;
                 } 
                 else {
@@ -70,18 +72,24 @@ public class Renderer implements IConstants {
             } 
             else {
                 Point dirPoint;
+                // Graphics g = canvasImage.getGraphics();
+                // g.setColor(Color.BLUE);
                 for (int i = 0; i < SAMPLE_SIZE; i++) {
                     dirPoint = getRandomPoint();
                     direction = Intersector.normalize(dirPoint.subtract(pOrigin));
                     intersectionDistance = getClosestIntersection(pOrigin, direction, normal);
                     if (intersectionDistance == Double.MAX_VALUE) {
-                        // System.out.println("Siguen exitiendo nulos");
+                        System.out.println("Siguen exitiendo nulos");
                         continue;
                     }
                     intersectionPoint = Intersector.intersectionPoint(pOrigin, direction, intersectionDistance);
                     dirToIntersection = intersectionPoint.subtract(pOrigin);
                     length = Intersector.length(dirToIntersection);
                     intensity = getIntensity(length);
+
+
+                   // g.drawLine(((int)pOrigin.getX()), ((int)pOrigin.getY()), ((int)intersectionPoint.getX()), ((int)intersectionPoint.getY()));
+
                     sampleColor = castRays(intersectionPoint, normal, direction, ++pDepthCount);
                     multiplyColorBy(sampleColor, intensity);
                     indirectColor[0] += sampleColor[0];
@@ -137,7 +145,7 @@ public class Renderer implements IConstants {
         double intersectionDistance = Double.MAX_VALUE;
         for (Point[] segment : segments) {
             tempDistance = Intersector.intersection(pOrigin, pDirection, segment[0], segment[1]);
-            if (tempDistance >= 0 & tempDistance < intersectionDistance) {
+            if (tempDistance > 0 & tempDistance < intersectionDistance) {
                 intersectionDistance = tempDistance;
                 pNormal.setX(segment[2].getX());
                 pNormal.setY(segment[2].getY());

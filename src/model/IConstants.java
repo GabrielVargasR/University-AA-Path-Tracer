@@ -4,7 +4,7 @@ public interface IConstants {
     public static final int IMAGE_SIZE = 500;
     public static final int SOURCES = 2;
     public static final int TRACE_DEPTH = 5;
-    public static final int SAMPLE_SIZE = 3;
+    public static final int SAMPLE_SIZE = 1;
 
     public static final int RED_R = 255;
     public static final int RED_G = 0;
