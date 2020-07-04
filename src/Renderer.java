@@ -36,11 +36,45 @@ public class Renderer implements IConstants {
         }
     }
     private double[] castRays(Point pOrigin,int pDepthCount){
-        double[] directColor = new double[3];
-        double[] indirectColor = new double[3];
         double[] color = new double[3];
+        if(pDepthCount <= TRACE_DEPTH){
+            double[] directColor = calculateDirectLight(pOrigin);
+            double[] indirectColor = new double[3];
+            //IndirectLigh
+            double[] sampleColor = new double[3];
+            Point[] seg = null;
+            Point dirPoint;
+            Point direction;
+            Point normal;
+            double tempDistance;
+            double intersectionDistance = Double.MAX_VALUE;
+            for (int i = 0; i < SAMPLE_SIZE; i++) {
+                dirPoint = getRandomPoint();
+                direction = Intersector.normalize(dirPoint.subtract(pOrigin));
+                for (Point[] segment : segments){
+                    tempDistance = Intersector.intersection(pOrigin, direction, segment[0], segment[1]);
+                    if (tempDistance >= 0 & tempDistance < intersectionDistance) {
+                        seg = segment;
+                        intersectionDistance = tempDistance;
+                        normal = segment[2];
+                    }
+                }
+                if(seg == null){
+                    System.out.println("Siguen exitiendo nulos");
+                }
+                sampleColor = castRays(pOrigin, pDepthCount++);
+
+            }
+            color[0] += (directColor[0] + indirectColor[0]);
+            color[1] += (directColor[1] + indirectColor[1]);
+            color[2] += (directColor[2] + indirectColor[2]);
+        }
+        return color;
+
+    }
+    private double[] calculateDirectLight(Point pOrigin){
+        double[] directColor = new double[3];
         int sourcesHit = 0;
-        //DirectLigh
         for (Point source : sources) {
             double distance = 0;
             Point dirToSource = source.subtract(pOrigin);
@@ -68,12 +102,8 @@ public class Renderer implements IConstants {
         directColor[0] /= sourcesHit;
         directColor[1] /= sourcesHit;
         directColor[2] /= sourcesHit;
-        //IndirectLigh
-        color[0] += directColor[0];
-        color[1] += directColor[1];
-        color[2] += directColor[2];
-        return color;
 
+        return directColor;
     }
     private double getIntensity(double pLenght) {
         double intensity = 1 - (pLenght/(double)IMAGE_SIZE);
