@@ -185,7 +185,7 @@ public class Renderer implements IConstants {
                 return (new Point(random.nextInt((int)pSeg1.getX()+1), random.nextInt(IMAGE_SIZE)));
             } else{
                 int adjust = IMAGE_SIZE - (int)pSeg1.getX();
-                return (new Point(random.nextInt((int)pSeg1.getX()+1)+adjust, random.nextInt(IMAGE_SIZE)));
+                return (new Point(random.nextInt(adjust)+(int)pSeg1.getX()+1, random.nextInt(IMAGE_SIZE)));
             }
         }
     }
