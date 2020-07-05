@@ -189,9 +189,9 @@ public class Tracer implements IConstants{
         }
     }
 
-    private boolean isInside(Point pIntersection){
-        return (pIntersection.getX() >= 0 & pIntersection.getY() >= 0 & pIntersection.getX() <= IMAGE_SIZE & pIntersection.getY() <= IMAGE_SIZE);
-    }
+    // private boolean isInside(Point pIntersection){
+    //     return (pIntersection.getX() >= 0 & pIntersection.getY() >= 0 & pIntersection.getX() <= IMAGE_SIZE & pIntersection.getY() <= IMAGE_SIZE);
+    // }
    
     private double[] castToSource(Point pPoint){
         // returns color reflected by the point due to the light shining on it
