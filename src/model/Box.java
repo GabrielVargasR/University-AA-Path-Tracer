@@ -92,14 +92,14 @@ public class Box implements IConstants{
 
     private void createScene(){
         // red wall
-        for(int x = 0; x < 13; x++){
+        for(int x = 0; x < 1; x++){
             for(int y = 0; y <= IMAGE_SIZE; y++){
                 this.scene.get(x).replace(y, new int[]{RED_R, RED_G, RED_B, SPECULAR});
             }
         }
 
         // green wall
-        for(int x = 488; x <= IMAGE_SIZE; x++){
+        for(int x = 499; x <= IMAGE_SIZE; x++){
             for(int y = 0; y <= IMAGE_SIZE; y++){
                 this.scene.get(x).replace(y, new int[]{GREEN_R, GREEN_G, GREEN_B, SPECULAR});
             }

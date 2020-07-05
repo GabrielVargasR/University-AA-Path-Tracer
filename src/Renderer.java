@@ -29,7 +29,7 @@ public class Renderer implements IConstants {
 
         //for (int i = 0; i < 1; i++) {
         while (true) {
-            point = getRandomPoint();
+            point = new Point(random.nextInt(IMAGE_SIZE),random.nextInt(IMAGE_SIZE));
             //point = new Point(390,250);
             pixelRGB = castRays(point, null, null, 0);
             // divideColorBy(pixelRGB, TRACE_DEPTH);
@@ -77,7 +77,7 @@ public class Renderer implements IConstants {
                 // g.setColor(Color.BLUE);
                 for (int i = 0; i < SAMPLE_SIZE; i++) {
                     if(pSegment == null){
-                        dirPoint = getRandomPoint();
+                        dirPoint = getRandomPoint(pOrigin.getX(),pOrigin.getY(),5,5);
                     }
                     else{
                         dirPoint = opaqueReflectionPoint(pIncomingSource,pSegment[0],pSegment[1]);
@@ -210,9 +210,9 @@ public class Renderer implements IConstants {
         pColor[2] *= pScalar;
     }
 
-    private Point getRandomPoint() {
-        int randomX = random.nextInt(IMAGE_SIZE);
-        int randomY = random.nextInt(IMAGE_SIZE);
+    private Point getRandomPoint(double pMeanX, double pMeanY,double pStdDevX, double pStdDevY) {
+        int randomX = (int)(random.nextGaussian()*pStdDevX+pMeanX);
+        int randomY = (int)(random.nextGaussian()*pStdDevY+pMeanY);
         return new model.Point(randomX, randomY);
     }
 
