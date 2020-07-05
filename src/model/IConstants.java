@@ -2,7 +2,7 @@ package model;
 
 public interface IConstants {
     public static final int IMAGE_SIZE = 500;
-    public static final int SOURCES = 2;
+    public static final int SOURCES =2;
     public static final int TRACE_DEPTH = 5;
     public static final int SAMPLE_SIZE = 3;
 
@@ -18,9 +18,9 @@ public interface IConstants {
     public static final int LIGHT_G = 255;
     public static final int LIGHT_B = 240;
 
-    public static final int BOX_R = 210;
-    public static final int BOX_G = 210;
-    public static final int BOX_B = 210;
+    public static final int BOX_R = 255; //210;
+    public static final int BOX_G = 0; //210;
+    public static final int BOX_B = 255;//210;
 
     public static final int BACKGROUND_R = 255;
     public static final int BACKGROUND_G = 255;

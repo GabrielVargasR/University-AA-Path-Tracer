@@ -73,8 +73,9 @@ public class Box implements IConstants{
     }
 
     private void createSources(){
-        // sources.add(new Point(250, 1));
-        sources.add(new Point(50, 1));
+        sources.add(new Point(250, 1));
+        // sources.add(new Point(50, 1));
+        // sources.add(new Point(450, 1));
         sources.add(new Point(305, 201));
     }
 
