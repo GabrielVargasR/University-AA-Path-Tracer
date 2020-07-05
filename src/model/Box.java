@@ -73,7 +73,8 @@ public class Box implements IConstants{
     }
 
     private void createSources(){
-        sources.add(new Point(250, 1));
+        // sources.add(new Point(250, 1));
+        sources.add(new Point(50, 1));
         sources.add(new Point(305, 201));
     }
 
@@ -103,6 +104,8 @@ public class Box implements IConstants{
                 this.scene.get(x).replace(y, new int[]{GREEN_R, GREEN_G, GREEN_B, SPECULAR});
             }
         }
+
+
 
         // box
         for(int x = 70; x < 161; x++){

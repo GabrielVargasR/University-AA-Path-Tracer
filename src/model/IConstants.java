@@ -16,7 +16,7 @@ public interface IConstants {
 
     public static final int LIGHT_R = 255;
     public static final int LIGHT_G = 255;
-    public static final int LIGHT_B = 130;
+    public static final int LIGHT_B = 240;
 
     public static final int BOX_R = 210;
     public static final int BOX_G = 210;
