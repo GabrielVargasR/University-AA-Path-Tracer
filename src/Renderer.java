@@ -1,9 +1,10 @@
 import model.*;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 
 public class Renderer implements IConstants {
     private static Renderer instance;
@@ -12,6 +13,7 @@ public class Renderer implements IConstants {
     private Random random;
     private ArrayList<Point[]> segments;
     private ArrayList<Point> sources;
+    private HashMap<Integer, HashMap<Integer, Color>> dynamic;
 
     public static Renderer getInstance() {
         if (instance == null)
@@ -26,14 +28,22 @@ public class Renderer implements IConstants {
     public void render() {
         Point point;
         double[] pixelRGB;
+        Color pixelColor;
 
         //for (int i = 0; i < 1; i++) {
         while (true) {
             point = new Point(random.nextInt(IMAGE_SIZE),random.nextInt(IMAGE_SIZE));
             //point = new Point(390,250);
-            pixelRGB = castRays(point, null, null, 0);
-            // divideColorBy(pixelRGB, TRACE_DEPTH);
-            Color pixelColor = new Color((int) pixelRGB[0], (int) pixelRGB[1], (int) pixelRGB[2]);
+
+            if (dynamic.get((int)point.getX()).get((int)point.getY()) == null) {
+                pixelRGB = castRays(point, null, null, 0);
+                // divideColorBy(pixelRGB, TRACE_DEPTH);
+                pixelColor = new Color((int) pixelRGB[0], (int) pixelRGB[1], (int) pixelRGB[2]);
+                dynamic.get((int)point.getX()).put((int)point.getY(), pixelColor);
+                
+            } else{
+                pixelColor = dynamic.get((int)point.getX()).get((int)point.getY());
+            }
             canvasImage.setRGB((int) point.getX(), (int) point.getY(), pixelColor.getRGB());
         }
     }
@@ -221,6 +231,16 @@ public class Renderer implements IConstants {
         random = new Random();
         segments = box.getSegments();
         sources = box.getSources();
+        dynamic = new HashMap<Integer, HashMap<Integer, Color>>();
+
+        HashMap<Integer, Color> temp = null;
+        for (int x = 0; x < IMAGE_SIZE+1; x++){
+            dynamic.put(x, new HashMap<Integer, Color>());
+            temp = dynamic.get(x);
+            for (int y = 0; y <IMAGE_SIZE+1; y++){
+                temp.put(y, null);
+            }
+        }
     }
 
     public static void main(String[] args) {
